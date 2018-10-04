@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
+import { RouletteRoutingModule } from './roulette-routing.module';
 import { RouletteComponent } from './roulette.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    SharedModule,
+    RouletteRoutingModule,
   ],
-  declarations: [RouletteComponent]
+  declarations: [
+    RouletteComponent,
+  ]
 })
 export class RouletteModule { }

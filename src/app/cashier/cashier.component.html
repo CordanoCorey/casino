@@ -1,3 +1,5 @@
-<p>
-  cashier works!
-</p>
+<iu-timer [countUp]="false" [countDown]="true" [countdownFrom]="countdownFrom" (timesUp)="onTimesUp()"></iu-timer>
+<h2>{{ remainingRounds }}</h2>
+<mat-card id="cashier-totals" color="primary">
+  <casino-totals [totals]="totals$ | async" (save)="onSaveTotals($event)"></casino-totals>
+</mat-card>
