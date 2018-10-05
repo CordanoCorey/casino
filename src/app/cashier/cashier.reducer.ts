@@ -1,7 +1,7 @@
 import { Action, build } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
 import { Cashier } from './cashier.model';
 import { Totals } from '../shared/models';
@@ -48,5 +48,12 @@ export function cashierSelector(store: Store<any>): Observable<Cashier> {
 export function totalsSelector(store: Store<any>): Observable<Totals> {
     return cashierSelector(store).pipe(
         map(x => x.totals)
+    );
+}
+
+export function chipValueSelector(store: Store<any>): Observable<number> {
+    return totalsSelector(store).pipe(
+        map(x => x.chipValue),
+        distinctUntilChanged()
     );
 }

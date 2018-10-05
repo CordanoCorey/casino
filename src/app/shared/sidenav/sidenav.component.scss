@@ -1,0 +1,81 @@
+@import '~@angular/material/_theming';
+@import '../../../common';
+.sidenav {
+    background: #111; // @include dark-blue-gradient();
+    box-shadow: 5px 0 5px -2px #888;
+    -webkit-box-shadow: 5px 0 5px -2px #888;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100px;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 1;
+    text-align: center;
+    position: relative;
+    z-index: 9999;
+    padding: 1rem 10px 0 10px;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    width: 100px;
+    height: 100%;
+    a.link {
+        @include mat-elevation(4);
+        @include black-hgradient();
+        position: absolute;
+        left: 0px;
+        text-decoration: none;
+        width: 100px;
+        padding: 12px 10px;
+        mat-icon {
+            color: #8e8e8e;
+            font-size: 48px;
+            height: 48px;
+            width: 48px;
+        }
+        .label {
+            clear: both;
+            color: #fff;
+            width: 100px;
+            font-size: 14px;
+            padding: 12px 0px;
+            display: block;
+        }
+    }
+    a.link:hover {
+        background: #fff;
+        @include silver-hgradient();
+        mat-icon {
+            color: darkgreen;
+            color: #000;
+        }
+        .label {
+            color: #111;
+        }
+    }
+    a.link:nth-child(1):hover {
+        @include black-hgradient();
+    }
+    a.link:nth-child(1) {
+        top: 60px;
+    }
+    a.link:nth-child(2) {
+        top: 220px;
+    }
+    a.link:nth-child(3) {
+        top: 360px;
+    }
+    a.link:nth-child(4) {
+        top: 500px;
+    }
+    a.link:nth-child(5) {
+        top: 640px;
+    }
+    img.logo {
+        position: absolute; // bottom: 12px;
+        top: 0px;
+        left: 0;
+        width: 120px;
+        cursor: pointer;
+    }
+}

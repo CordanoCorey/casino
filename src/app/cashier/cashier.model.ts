@@ -14,7 +14,7 @@ export class Cashier {
     }
 
     get unitValue(): number {
-        return this.totals.unitValue;
+        return this.totals.chipValue;
     }
 
     update(data: any): Cashier {

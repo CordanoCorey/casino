@@ -4,14 +4,14 @@ export class Totals {
     bankTotal = 0;
     chipTotal = 0;
 
-    get unitValue(): number {
-        return this.bankTotal / this.chipTotal;
+    get chipValue(): number {
+        return this.chipTotal === 0 ? 0 : this.bankTotal / this.chipTotal;
     }
 
     get metadata(): Metadata {
         return build(Metadata, {
             ignore: [
-                'unitValue',
+                'chipValue',
             ]
         });
     }

@@ -3,7 +3,7 @@ import { build, Time, SmartComponent, TimerComponent } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CashierActions, totalsSelector } from './cashier.reducer';
+import { CashierActions, totalsSelector, chipValueSelector } from './cashier.reducer';
 import { Totals } from '../shared/models';
 
 @Component({
@@ -17,11 +17,13 @@ export class CashierComponent extends SmartComponent implements OnInit {
   countdownFrom = build(Time, {
     minutes: 1,
   });
+  chipValue$: Observable<number>;
   totals$: Observable<Totals>;
   remainingRounds = 30;
 
   constructor(public store: Store<any>) {
     super(store);
+    this.chipValue$ = chipValueSelector(store);
     this.totals$ = totalsSelector(store);
   }
 
