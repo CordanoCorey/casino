@@ -1,3 +1,4 @@
-<p>
-  roulette works!
-</p>
+<casino-container [hasWallpaper]="false" backgroundImage="assets/bg-roulette.png">
+  <img id="roulette-wheel" src="assets/roulette-wheel.png" (click)="toggle()" [class.spin]="spinning">
+  <span class="ball"></span>
+</casino-container>

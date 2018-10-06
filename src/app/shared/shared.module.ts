@@ -6,6 +6,8 @@ import { HeaderComponent } from './header/header.component';
 import { ExchangeRateComponent } from './exchange-rate/exchange-rate.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TotalsComponent } from './totals/totals.component';
+import { RulesComponent } from './rules/rules.component';
+import { ChipValuesComponent } from './chip-values/chip-values.component';
 
 @NgModule({
   imports: [
@@ -18,6 +20,8 @@ import { TotalsComponent } from './totals/totals.component';
     HeaderComponent,
     SidenavComponent,
     TotalsComponent,
+    RulesComponent,
+    ChipValuesComponent,
   ],
   exports: [
     LibraryModule,

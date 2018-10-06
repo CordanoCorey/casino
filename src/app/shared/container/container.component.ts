@@ -45,6 +45,8 @@ export class ContainerComponent extends SmartComponent implements OnInit {
       build(Image, { src: 'assets/julz-9.jpg', height: 960, width: 720 }),
       build(Image, { src: 'assets/julz-10.jpg', height: 960, width: 720 }),
       build(Image, { src: 'assets/julz-11.jpg', height: 960, width: 956 }),
+      build(Image, { src: 'assets/julz-12.jpg', height: 960, width: 720 }),
+      build(Image, { src: 'assets/julz-13.jpg', height: 960, width: 720 }),
     ];
   }
 
@@ -57,15 +59,15 @@ export class ContainerComponent extends SmartComponent implements OnInit {
   }
 
   get offsetLeft(): number {
-    return this.mobile ? 0 : 120;
+    return 0;
   }
 
   get offsetTop(): number {
-    return 64;
+    return 0;
   }
 
-  get sidenavHeight(): number {
-    return this.windowHeight + 50 + 64;
+  get menuWidth(): number {
+    return this.windowWidth;
   }
 
   get windowHeight(): number {

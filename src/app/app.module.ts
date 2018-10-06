@@ -39,7 +39,7 @@ export const reducers: ActionReducerMap<any> = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AppRoutingModule,

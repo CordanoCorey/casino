@@ -1,0 +1,45 @@
+@import '~@angular/material/_theming';
+@import '../../common';
+
+#roulette-wheel {
+  position: absolute;
+  left: 150px;
+  top: 130px;
+  width: 480px;
+  cursor: pointer;
+}
+
+#roulette-wheel.spin {
+  -webkit-animation: rotation 3s infinite linear;
+}
+
+.ball {
+  @include mat-elevation(8);
+  position: absolute;
+  left: 381px;
+  top: 155px;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  background-color: #fff;
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(359deg);
+  }
+
+  to {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@-webkit-keyframes rotation180 {
+  from {
+    -webkit-transform: rotate(359deg);
+  }
+
+  to {
+    -webkit-transform: rotate(0deg);
+  }
+}

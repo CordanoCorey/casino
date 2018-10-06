@@ -7,9 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RouletteComponent implements OnInit {
 
+  spinning = false;
+
   constructor() { }
 
+  get noMoreBets(): boolean {
+    return false;
+  }
+
   ngOnInit() {
+  }
+
+  spin() {
+    this.spinning = true;
+  }
+
+  stop() {
+    this.spinning = false;
+  }
+
+  toggle() {
+    this.spinning = !this.spinning;
   }
 
 }

@@ -1,12 +1,12 @@
-<casino-header [windowWidth]="contentWidth" [offsetLeft]="offsetLeft" [mobile]="mobile"></casino-header>
-<casino-sidenav *ngIf="!mobile" [style.height.px]="sidenavHeight"></casino-sidenav>
+<!-- <casino-header [windowWidth]="contentWidth" [offsetLeft]="offsetLeft" [mobile]="mobile"></casino-header> -->
+<casino-sidenav *ngIf="!mobile" [style.width.px]="menuWidth"></casino-sidenav>
 
 <div id="content" class="scrollable" [style.height.px]="windowHeight" [style.width.px]="contentWidth" [style.left.px]="offsetLeft"
   [style.background-image]="hasBackgroundImage ? 'url(' + backgroundImage + ')' : 'none'">
   <ng-content></ng-content>
   <iu-wallpaper *ngIf="hasWallpaper" [images]="images" [imageOpacity]="0.6" [shuffle]="true" [offsetLeft]="offsetLeft"
-    [offsetTop]="64"></iu-wallpaper>
-  <button id="help" mat-fab *ngIf="showHelp" routerLink="/contact">
+    [offsetTop]="offsetTop"></iu-wallpaper>
+  <!-- <button id="help" mat-fab *ngIf="showHelp" routerLink="/contact">
     <mat-icon aria-label="Email Us">help</mat-icon>
-  </button>
+  </button> -->
 </div>
