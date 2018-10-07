@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^6.1.8",
     "@angular/platform-browser-dynamic": "^6.1.8",
     "@angular/router": "^6.1.8",
-    "@caiu/library": "^6.2.53",
+    "@caiu/library": "^6.2.54",
     "@ngrx/effects": "^6.0.1",
     "@ngrx/store": "^6.0.1",
     "core-js": "^2.5.4",

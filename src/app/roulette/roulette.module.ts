@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouletteRoutingModule } from './roulette-routing.module';
 import { RouletteComponent } from './roulette.component';
 import { SharedModule } from '../shared/shared.module';
+import { RouletteWheelComponent } from './roulette-wheel/roulette-wheel.component';
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [
     RouletteComponent,
+    RouletteWheelComponent,
   ]
 })
 export class RouletteModule { }
