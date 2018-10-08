@@ -22,6 +22,7 @@ export class RouletteComponent extends SmartComponent implements OnInit {
 
   get ballChanges(): Subscription {
     return this.ball$.subscribe(x => {
+      // console.log('\n\nLEFT:\t', x.positionLeft, '\nTOP:\t', x.positionTop);
       this.ball = x;
     });
   }

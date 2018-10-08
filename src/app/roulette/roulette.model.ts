@@ -2,6 +2,15 @@ import { build, Collection } from '@caiu/library';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export class RouletteWheelSpin {
+    slot: RouletteWheelSlot = new RouletteWheelSlot();
+
+    get slotColor(): string {
+        return this.slot.color;
+    }
+
+    get slotNumber(): string {
+        return this.slot.number;
+    }
 
 }
 
@@ -10,65 +19,116 @@ export class Roulette extends Collection<RouletteWheelSpin> {
 
 export class RouletteWheel {
     ballSubject = new BehaviorSubject<RouletteBall>(new RouletteBall());
-    lastSpin: RouletteWheelSlot;
+    lastSpin: RouletteWheelSpin;
+    lastSpinSubject = new BehaviorSubject<RouletteWheelSpin>(null);
     moment = 0;
-    slots: RouletteWheelSlot[] = [
-        build(RouletteWheelSlot, { number: '00' }),
-        build(RouletteWheelSlot, { number: '27' }),
-        build(RouletteWheelSlot, { number: '10' }),
-        build(RouletteWheelSlot, { number: '35' }),
-        build(RouletteWheelSlot, { number: '29' }),
-        build(RouletteWheelSlot, { number: '12' }),
-        build(RouletteWheelSlot, { number: '8' }),
-        build(RouletteWheelSlot, { number: '19' }),
-        build(RouletteWheelSlot, { number: '31' }),
-        build(RouletteWheelSlot, { number: '018' }),
-        build(RouletteWheelSlot, { number: '6' }),
-        build(RouletteWheelSlot, { number: '21' }),
-        build(RouletteWheelSlot, { number: '33' }),
-        build(RouletteWheelSlot, { number: '16' }),
-        build(RouletteWheelSlot, { number: '4' }),
-        build(RouletteWheelSlot, { number: '23' }),
-        build(RouletteWheelSlot, { number: '35' }),
-        build(RouletteWheelSlot, { number: '14' }),
-        build(RouletteWheelSlot, { number: '2' }),
-        build(RouletteWheelSlot, { number: '0' }),
-        build(RouletteWheelSlot, { number: '28' }),
-        build(RouletteWheelSlot, { number: '9' }),
-        build(RouletteWheelSlot, { number: '26' }),
-        build(RouletteWheelSlot, { number: '30' }),
-        build(RouletteWheelSlot, { number: '11' }),
-        build(RouletteWheelSlot, { number: '7' }),
-        build(RouletteWheelSlot, { number: '20' }),
-        build(RouletteWheelSlot, { number: '32' }),
-        build(RouletteWheelSlot, { number: '17' }),
-        build(RouletteWheelSlot, { number: '5' }),
-        build(RouletteWheelSlot, { number: '22' }),
-        build(RouletteWheelSlot, { number: '34' }),
-        build(RouletteWheelSlot, { number: '15' }),
-        build(RouletteWheelSlot, { number: '3' }),
-        build(RouletteWheelSlot, { number: '24' }),
-        build(RouletteWheelSlot, { number: '36' }),
-        build(RouletteWheelSlot, { number: '13' }),
-        build(RouletteWheelSlot, { number: '1' }),
-    ];
-    spinning = false;
-    started = false;
+    status: 'STOPPED' | 'STARTED' | 'TRANSITIONING' | 'SPINNING' = 'STOPPED';
     timerPeriod = 10;
-    totalSpinSeconds = 10;
-    transitioning = false;
+    totalSpinSeconds = 12;
     _ball: RouletteBall;
+    _slots: RouletteWheelSlot[] = [];
 
     static ArcLength(diameter: number, centralAngle: number): number {
         return Math.PI * diameter * (centralAngle / 360);
     }
 
+    static Degrees2Radians(degrees: number) {
+        return Math.PI / 180 * degrees;
+    }
+
+    static GetPositionRelativeToCenter(center: PixelPosition, coordinates: PixelCoordinates, degrees: number): PixelPosition {
+        if (degrees <= 90) {
+            return build(PixelPosition, {
+                top: center.top - coordinates.y,
+                left: center.left + coordinates.x
+            });
+        } else if (degrees <= 180) {
+            return build(PixelPosition, {
+                top: center.top + coordinates.y,
+                left: center.left + coordinates.x
+            });
+        } else if (degrees <= 270) {
+            return build(PixelPosition, {
+                top: center.top + coordinates.y,
+                left: center.left - coordinates.x
+            });
+        } else {
+            return build(PixelPosition, {
+                top: center.top - coordinates.y,
+                left: center.left - coordinates.x
+            });
+        }
+    }
+
+    static RotateSlot(slot: RouletteWheelSlot, delta: number): RouletteWheelSlot {
+        const d = (slot.startDegrees - delta) % 360;
+        const startDegrees = d < 0 ? d + 360 : d;
+        const endDegrees = (startDegrees + 360 / 38) % 360;
+        // console.log(
+        //     '\n\nSlot Number:\t', slot.number, '\nDelta:\t', delta,
+        //     '\nStart Degrees:\t', slot.startDegrees, '\nEnd Degrees:\t', slot.endDegrees,
+        //     '\nDelta Start Degrees:\t', startDegrees, '\nDelta End Degrees:\t', endDegrees);
+        return build(RouletteWheelSlot, slot, { startDegrees, endDegrees });
+    }
+
+    static RotateSlots(slots: RouletteWheelSlot[], delta: number): RouletteWheelSlot[] {
+        return slots.map(x => RouletteWheel.RotateSlot(x, delta));
+    }
+
+    static Radians2Degrees(radians: number) {
+        return 180 / Math.PI * radians;
+    }
+
     constructor(
-        public diameter = 0,
+        public diameter = 500,
         public offsetLeft = 0,
         public offsetTop = 0,
-        public wheelSecondsPerRevolution = 3,
+        public wheelSecondsPerRevolution = 5,
         public ballSecondsPerRevolution = 1) {
+        this.slots = [
+            build(RouletteWheelSlot, { number: '00' }),
+            build(RouletteWheelSlot, { number: '27' }),
+            build(RouletteWheelSlot, { number: '10' }),
+            build(RouletteWheelSlot, { number: '35' }),
+            build(RouletteWheelSlot, { number: '29' }),
+            build(RouletteWheelSlot, { number: '12' }),
+            build(RouletteWheelSlot, { number: '8' }),
+            build(RouletteWheelSlot, { number: '19' }),
+            build(RouletteWheelSlot, { number: '31' }),
+            build(RouletteWheelSlot, { number: '18' }),
+            build(RouletteWheelSlot, { number: '6' }),
+            build(RouletteWheelSlot, { number: '21' }),
+            build(RouletteWheelSlot, { number: '33' }),
+            build(RouletteWheelSlot, { number: '16' }),
+            build(RouletteWheelSlot, { number: '4' }),
+            build(RouletteWheelSlot, { number: '23' }),
+            build(RouletteWheelSlot, { number: '35' }),
+            build(RouletteWheelSlot, { number: '14' }),
+            build(RouletteWheelSlot, { number: '2' }),
+            build(RouletteWheelSlot, { number: '0' }),
+            build(RouletteWheelSlot, { number: '28' }),
+            build(RouletteWheelSlot, { number: '9' }),
+            build(RouletteWheelSlot, { number: '26' }),
+            build(RouletteWheelSlot, { number: '30' }),
+            build(RouletteWheelSlot, { number: '11' }),
+            build(RouletteWheelSlot, { number: '7' }),
+            build(RouletteWheelSlot, { number: '20' }),
+            build(RouletteWheelSlot, { number: '32' }),
+            build(RouletteWheelSlot, { number: '17' }),
+            build(RouletteWheelSlot, { number: '5' }),
+            build(RouletteWheelSlot, { number: '22' }),
+            build(RouletteWheelSlot, { number: '34' }),
+            build(RouletteWheelSlot, { number: '15' }),
+            build(RouletteWheelSlot, { number: '3' }),
+            build(RouletteWheelSlot, { number: '24' }),
+            build(RouletteWheelSlot, { number: '36' }),
+            build(RouletteWheelSlot, { number: '13' }),
+            build(RouletteWheelSlot, { number: '1' }),
+        ];
+    }
+
+    get lastSpin$(): Observable<RouletteWheelSpin> {
+        return this.lastSpinSubject.asObservable();
     }
 
     set ball(value: RouletteBall) {
@@ -111,7 +171,7 @@ export class RouletteWheel {
     }
 
     get ballDistanceFromCenterFinal(): number {
-        return this.radius - 10;
+        return this.radius - 0;
     }
 
     get ballRevolutionsPerSpin(): number {
@@ -138,6 +198,10 @@ export class RouletteWheel {
             top: this.centerPosition.top - this.ballDistanceFromCenterFinal,
             left: this.centerPosition.left,
         });
+    }
+
+    get lastSlotPosition(): PixelPosition {
+        return this.getSlotPosition(this.lastSpin.slotNumber);
     }
 
     get momentsPerBallRevolution(): number {
@@ -171,7 +235,6 @@ export class RouletteWheel {
 
     get nextBallPositionDistanceFromCenter(): number {
         const d = this.ballDistanceFromCenter - this.ballDistanceTraversedPerMoment;
-        // console.log(this.moment, d);
         return Math.max(d, this.ballDistanceFromCenterFinal);
     }
 
@@ -188,10 +251,6 @@ export class RouletteWheel {
         }
     }
 
-    get nextBallPositionMoment(): number {
-        return Math.min(this.moment + 1, this.momentsPerSpin);
-    }
-
     get radius(): number {
         return this.diameter / 2;
     }
@@ -204,123 +263,216 @@ export class RouletteWheel {
         return 360 / 38;
     }
 
+    set slots(value: RouletteWheelSlot[]) {
+        this._slots = value.map((x, i) => {
+            const startDegrees = i === 0 ? 360 - 360 / (38 * 2) : (360 / 38) * (i - 1) + 360 / (38 * 2);
+            const endDegrees = (startDegrees + 360 / 38) % 360;
+            return build(RouletteWheelSlot, x, { startDegrees, endDegrees });
+        });
+    }
+
+    get slots(): RouletteWheelSlot[] {
+        return this._slots;
+    }
+
+    get spinning(): boolean {
+        return this.status === 'SPINNING';
+    }
+
+    get started(): boolean {
+        return !this.stopped;
+    }
+
+    get stopped(): boolean {
+        return this.status === 'STOPPED';
+    }
+
+    get transitioning(): boolean {
+        return this.status === 'TRANSITIONING';
+    }
+
+    get wheelDegreesPerMoment(): number {
+        return (360 / this.wheelSecondsPerRevolution) * (this.timerPeriod / 1000);
+    }
+
+    degreesAtTime(t: number): number {
+        return (t * this.wheelDegreesPerMoment) % 360;
+    }
+
     emitNextBall(ball: RouletteBall) {
         this.ball = ball;
         this.ballSubject.next(ball);
+    }
+
+    emitDefaultBall() {
+        this.emitNextBall(this.ballBeforeSpin);
+    }
+
+    getDegreesTraversed(pos: PixelPosition): number {
+        const centerLeft = this.centerPosition.left;
+        const centerTop = this.centerPosition.top;
+        const x = pos.left - centerLeft;
+        const y = pos.top - centerTop;
+        // console.log(x, y, Math.atan(Math.abs(x) / Math.abs(y)), RouletteWheel.Radians2Degrees(Math.atan(Math.abs(y) / Math.abs(x))));
+        const theta = RouletteWheel.Radians2Degrees(Math.atan(Math.abs(y) / Math.abs(x)));
+        if (x >= 0 && y <= 0) { // Q1
+            // console.log('Q1', 270 + theta);
+            return 270 + theta;
+        } else if (x >= 0 && y >= 0) { // Q2
+            // console.log('Q2', 270 - theta);
+            return 270 - theta;
+        } else if (x <= 0 && y >= 0) { // Q3
+            // console.log('Q3', 90 + theta);
+            return 90 + theta;
+        } else if (x <= 0 && y <= 0) { // Q4
+            // console.log('Q4', 90 - theta);
+            return 90 - theta;
+        }
     }
 
     getDistanceFromCenter(pos: PixelPosition): number {
         return Math.sqrt(Math.pow(this.centerPosition.top - pos.top, 2) + Math.pow(this.centerPosition.left - pos.left, 2));
     }
 
-    getPositionRelativeToCenter(pos: PixelCoordinates): PixelPosition {
-        const d = this.nextBallPositionDegreesTraversed;
-        if (d <= 90) {
-            return build(PixelPosition, {
-                top: this.centerPosition.top - pos.y,
-                left: this.centerPosition.left + pos.x
-            });
-        } else if (d <= 180) {
-            return build(PixelPosition, {
-                top: this.centerPosition.top + pos.y,
-                left: this.centerPosition.left + pos.x
-            });
-        } else if (d <= 270) {
-            return build(PixelPosition, {
-                top: this.centerPosition.top + pos.y,
-                left: this.centerPosition.left - pos.x
-            });
-        } else {
-            return build(PixelPosition, {
-                top: this.centerPosition.top - pos.y,
-                left: this.centerPosition.left - pos.x
-            });
-        }
+    getPositionRelativeToCenter(coordinates: PixelCoordinates): PixelPosition {
+        return RouletteWheel.GetPositionRelativeToCenter(this.centerPosition, coordinates, this.nextBallPositionDegreesTraversed);
     }
 
-    getSlotPosition() {
-
+    getSlotPosition(slotNumber: string): PixelPosition {
+        const slot = RouletteWheel.RotateSlot(this.slots.find(x => x.number === slotNumber), this.degreesAtTime(this.moment));
+        // this.log(slot);
+        return slot.getBallPosition(this.centerPosition, this.radius);
     }
 
-    numberAtTimeAndPosition(t: number, pos: PixelPosition): string {
-        return '';
+    playSound() {
+        const audio = new Audio('assets/roulette-spin.mp3');
+        audio.play();
+    }
+
+    slotAtTimeAndDegrees(t: number, degrees: number): RouletteWheelSlot {
+        return this.slotsAtTime(t).find(x => x.inSlot(360 - degrees));
     }
 
     slotAtTimeAndPosition(t: number, pos: PixelPosition): RouletteWheelSlot {
-        return build(RouletteWheelSlot, {
-            number: this.numberAtTimeAndPosition
-        });
+        // console.log(this.moment);
+        const degrees = this.getDegreesTraversed(pos);
+        console.log(degrees);
+        return this.slotAtTimeAndDegrees(t, degrees);
     }
 
-    spin() {
-        this.spinning = true;
-        this.startBall();
+    slotsAtTime(t: number): RouletteWheelSlot[] {
+        return RouletteWheel.RotateSlots(this.slots, this.degreesAtTime(t));
     }
 
     start() {
-        this.started = true;
-        this.ballSubject.next(this.ballBeforeSpin);
+        console.log('START');
+        this.status = 'STARTED';
+        this.emitDefaultBall();
+        this.getNextMoment();
     }
 
-    getNextMoment() {
-        if (this.ballStopped) {
-            this.stopBall();
-        } else {
-            setTimeout(() => {
-                this.moment = this.nextBallPositionMoment;
-                const pos = this.nextBallPosition;
-                const ball = build(RouletteBall, {
-                    positionLeft: pos.left,
-                    positionTop: pos.top,
-                });
-                this.ball = ball;
-                this.ballSubject.next(ball);
-                this.getNextMoment();
-            }, this.timerPeriod);
+    startSpin() {
+        console.log('START SPIN');
+        if (this.started) {
+            this.status = 'SPINNING';
+            this.playSound();
         }
     }
 
-    startBall() {
-        if (this.spinning) {
-            this.getNextMoment();
-        }
+    endSpin(t: number, pos: PixelPosition) {
+        console.log('END SPIN', t);
+        const spin = build(RouletteWheelSpin, {
+            slot: this.slotAtTimeAndPosition(t, pos),
+        });
+        console.dir(spin);
+        this.lastSpin = spin;
+        this.lastSpinSubject.next(this.lastSpin);
+        this.startTransition();
     }
 
     startTransition() {
-        this.transitioning = true;
-        setTimeout(() => {
-
-        }, 20000);
+        console.log('START TRANSITION');
+        this.status = 'TRANSITIONING';
+        // setTimeout(() => {
+        //     this.stopTransition();
+        // }, 20000);
     }
 
     stop() {
-        this.started = false;
-    }
-
-    stopBall() {
-        this.spinning = false;
+        console.log('STOP');
+        this.status = 'STOPPED';
     }
 
     stopTransition() {
+        console.log('STOP TRANSITION');
+        this.status = 'STARTED';
         this.emitNextBall(this.ballBeforeSpin);
     }
 
-    toggle() {
-        this.started = !this.started;
+    private getNextMoment() {
+        // this.log(this.status);
+        switch (this.status) {
+            case 'STARTED':
+                this.timeout();
+                break;
+            case 'SPINNING':
+                if (this.ballStopped) {
+                    this.endSpin(this.moment, this.ball.position);
+                    this.timeout();
+                } else {
+                    this.timeout(() => {
+                        const position = this.nextBallPosition;
+                        const ball = build(RouletteBall, { position });
+                        this.emitNextBall(ball);
+                    });
+                }
+                break;
+            case 'TRANSITIONING':
+                this.timeout(() => {
+                    const position = this.lastSlotPosition;
+                    const ball = build(RouletteBall, { position });
+                    this.emitNextBall(ball);
+                });
+                break;
+        }
+    }
+
+    private log(e: any) {
+        if (this.moment % 100 === 0) {
+            console.log('\n\nMoment = ', this.moment);
+            console.dir(e);
+            console.log('\n\n');
+        }
+    }
+
+    private timeout(fn?: Function) {
+        setTimeout(() => {
+            this.moment += 1;
+            if (fn && typeof fn === 'function') {
+                fn();
+            }
+            this.getNextMoment();
+        }, this.timerPeriod);
     }
 
 }
 
 export class RouletteBall {
-    moment = 0;
     positionLeft = 0;
     positionTop = 0;
+
+    set position(value: PixelPosition) {
+        this.positionLeft = value.left;
+        this.positionTop = value.top;
+    }
+
     get position(): PixelPosition {
         return build(PixelPosition, {
             top: this.positionTop,
             left: this.positionLeft
         });
     }
+
 }
 
 export class PixelCoordinates {
@@ -335,6 +487,8 @@ export class PixelPosition {
 
 export class RouletteWheelSlot {
     number = '';
+    startDegrees = 0;
+    endDegrees = 0;
 
     get color(): 'Red' | 'Black' | 'Green' {
         switch (this.number) {
@@ -418,4 +572,34 @@ export class RouletteWheelSlot {
                 return null;
         }
     }
+
+    get ballDegrees(): number {
+        const d = this.startDegrees;
+        if (d <= 90) {
+            return 90 - d;
+        } else if (d <= 180) {
+            return d - 90;
+        } else if (d <= 270) {
+            return 270 - d;
+        } else {
+            return d - 270;
+        }
+    }
+
+    getBallPosition(center: PixelPosition, radius: number): PixelPosition {
+        const degrees = this.ballDegrees;
+        const radians = degrees * (Math.PI / 180);
+        const d = radius;
+        const coordinates = build(PixelCoordinates, {
+            x: d * Math.cos(radians),
+            y: d * Math.cos(radians) * Math.tan(radians)
+        });
+        return RouletteWheel.GetPositionRelativeToCenter(center, coordinates, this.startDegrees);
+    }
+
+    inSlot(degrees: number): boolean {
+        return (degrees >= this.startDegrees && degrees < this.endDegrees)
+            || (this.startDegrees > this.endDegrees && degrees > (this.startDegrees || degrees < this.endDegrees));
+    }
+
 }

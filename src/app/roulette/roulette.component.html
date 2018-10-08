@@ -2,7 +2,7 @@
   <button id="btn-start" mat-button (click)="wheel.start()" *ngIf="showStartButton">START</button>
   <button id="btn-stop" mat-button (click)="wheel.stop()" *ngIf="showStopButton">STOP</button>
   <img id="roulette-wheel" src="assets/roulette-wheel.png" [style.left.px]="wheel.offsetLeft" [style.top.px]="wheel.offsetTop"
-    [style.width.px]="wheel.diameter" (click)="wheel.spin()" [class.spin]="wheel.started">
+    [style.width.px]="wheel.diameter" (click)="wheel.startSpin()" [class.spin]="wheel.started">
   <span class="center" [style.top.px]="wheel.centerPosition.top" [style.left.px]="wheel.centerPosition.left"></span>
   <span class="ball" [style.top.px]="ball.positionTop" [style.left.px]="ball.positionLeft" *ngIf="wheel.started"></span>
 </casino-container>

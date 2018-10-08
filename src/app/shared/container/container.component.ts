@@ -102,7 +102,7 @@ export class ContainerComponent extends SmartComponent implements OnInit {
   onResize(e: any) {
     this.windowHeight = e && e.currentTarget && e.currentTarget.innerHeight ? e.currentTarget.innerHeight : 0;
     this.windowWidth = e && e.currentTarget && e.currentTarget.innerWidth ? e.currentTarget.innerWidth : 0;
-    console.log('\n\nwindow:resize', this.windowWidth, this.windowHeight);
+    // console.log('\n\nwindow:resize', this.windowWidth, this.windowHeight);
   }
 
 }
