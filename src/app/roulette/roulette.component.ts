@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import { RouletteWheel, RouletteBall, RouletteWheelSpin } from './roulette.model';
+import { RouletteActions, spinHistorySelector, spinDistributionSelector } from './roulette.reducer';
 
 @Component({
   selector: 'casino-roulette',
@@ -14,18 +15,32 @@ export class RouletteComponent extends SmartComponent implements OnInit {
 
   ball: RouletteBall = new RouletteBall();
   ball$: Observable<RouletteBall>;
+  lastSpin: RouletteWheelSpin;
   lastSpin$: Observable<RouletteWheelSpin>;
   moment = 0;
+  spinDistribution$: Observable<RouletteWheelSpin[]>;
+  spinHistory$: Observable<RouletteWheelSpin[]>;
+  testing = false;
   wheel: RouletteWheel;
 
   constructor(public store: Store<any>) {
     super(store);
+    this.spinDistribution$ = spinDistributionSelector(store);
+    this.spinHistory$ = spinHistorySelector(store);
   }
 
   get ballChanges(): Subscription {
     return this.ball$.subscribe(x => {
-      // console.log('\n\nLEFT:\t', x.positionLeft, '\nTOP:\t', x.positionTop);
       this.ball = x;
+    });
+  }
+
+  get lastSpinChanges(): Subscription {
+    return this.lastSpin$.subscribe(x => {
+      this.lastSpin = x;
+      if (x) {
+        this.dispatch(RouletteActions.addSpin(this.lastSpin));
+      }
     });
   }
 
@@ -42,20 +57,26 @@ export class RouletteComponent extends SmartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wheel = new RouletteWheel(600, 100, 100);
+    this.wheel = new RouletteWheel(720, 100, 100);
     this.ball$ = this.wheel.ball$;
     this.lastSpin$ = this.wheel.lastSpin$;
     this.subscribe([
       this.ballChanges,
+      this.lastSpinChanges,
     ]);
-    this.lastSpin$.subscribe(x => { console.dir(x); });
     this.wheel.start();
-    this.wheel.moment$.subscribe(x => {
-      if (x === this.moment) {
-        console.log(x);
+    this.test();
+  }
+
+  test(sampleSize = 100) {
+    this.testing = true;
+    let i = 0;
+    setInterval(() => {
+      if (i < sampleSize) {
+        this.wheel.startSpin();
+        i++;
       }
-      this.moment = x;
-    });
+    }, 40000);
   }
 
 }

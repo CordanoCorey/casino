@@ -1,0 +1,8 @@
+@import '~@angular/material/_theming';
+@import '../../../common';
+.roulette-spin {
+    @include mat-elevation(16);
+    @include silver-gradient();
+    height: 400px;
+    width: 400px;
+}

@@ -1,3 +1,6 @@
-<p>
-  roulette-wheel works!
-</p>
+<div id="roulette-wheel">
+  <img class="wheel" src="assets/roulette-wheel.png" [style.left.px]="offsetLeft" [style.top.px]="offsetTop"
+    [style.width.px]="diameter" [style.height.px]="diameter" (click)="startSpin.emit()" [class.spin]="started">
+  <span class="center" [style.top.px]="centerPositionTop" [style.left.px]="centerPositionLeft"></span>
+  <span class="ball" [style.top.px]="ballPositionTop" [style.left.px]="ballPositionLeft" *ngIf="started"></span>
+</div>

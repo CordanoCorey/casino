@@ -1,4 +1,7 @@
-import { Action } from '@caiu/library';
+import { Action, compareNumbers } from '@caiu/library';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { Roulette, RouletteWheelSpin } from './roulette.model';
 
@@ -23,10 +26,28 @@ export function rouletteReducer(state: Roulette = new Roulette(), action: Action
     switch (action.type) {
 
         case RouletteActions.ADD_SPIN:
-            console.dir(action.payload);
+            console.dir(action.payload.slotNumber);
             return state.update(action.payload);
 
         default:
             return state;
     }
+}
+
+export function rouletteSelector(store: Store<any>): Observable<Roulette> {
+    return store.select('roulette');
+}
+
+export function spinHistorySelector(store: Store<any>): Observable<RouletteWheelSpin[]> {
+    return rouletteSelector(store).pipe(
+        map(x => x.asArray
+            .sort((a, b) => compareNumbers(-a.moment, -b.moment))
+            .filter((y, i) => i < 25))
+    );
+}
+
+export function spinDistributionSelector(store: Store<any>): Observable<RouletteWheelSpin[]> {
+    return rouletteSelector(store).pipe(
+        map(x => x.asArray)
+    );
 }

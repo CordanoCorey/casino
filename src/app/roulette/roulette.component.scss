@@ -1,69 +1,37 @@
 @import '~@angular/material/_theming';
 @import '../../common';
-
 #btn-start,
 #btn-stop {
-  position: absolute;
-  color: #fff;
-  top: 50px;
-  left: 50px;
-  padding: 10px 20px;
-  font-size: 20px;
+    position: absolute;
+    color: #fff;
+    top: 50px;
+    left: 50px;
+    padding: 10px 20px;
+    font-size: 20px;
 }
 
 #btn-start {
-  background-color: green;
+    background-color: green;
 }
 
 #btn-stop {
-  background-color: red;
+    background-color: red;
 }
 
-#roulette-wheel {
-  position: absolute;
-  cursor: pointer;
+casino-roulette-spin {
+    position: absolute;
+    right: 300px;
+    top: 100px;
 }
 
-#roulette-wheel.spin {
-  -webkit-animation: rotation 5s infinite linear;
+casino-roulette-spin-history {
+    position: fixed;
+    right: 50px;
+    top: 50px;
 }
 
-.center {
-  @include mat-elevation(8);
-  position: absolute;
-  border-radius: 20px;
-  height: 20px;
-  width: 20px;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.ball {
-  @include mat-elevation(8);
-  position: absolute;
-  left: 381px;
-  top: 155px;
-  height: 20px;
-  width: 20px;
-  border-radius: 20px;
-  background-color: #fff;
-}
-
-@-webkit-keyframes rotation {
-  from {
-    -webkit-transform: rotate(360deg);
-  }
-
-  to {
-    -webkit-transform: rotate(0deg);
-  }
-}
-
-@-webkit-keyframes rotation180 {
-  from {
-    -webkit-transform: rotate(360deg);
-  }
-
-  to {
-    -webkit-transform: rotate(0deg);
-  }
+casino-roulette-spin-distribution {
+    position: absolute;
+    right: 100px;
+    top: 100px;
 }

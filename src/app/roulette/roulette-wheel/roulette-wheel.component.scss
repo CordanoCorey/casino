@@ -1,0 +1,29 @@
+@import '~@angular/material/_theming';
+@import '../../../common';
+#roulette-wheel {
+    .wheel {
+        position: absolute;
+        cursor: pointer;
+    }
+    .wheel.spin {
+        -webkit-animation: rotation 5s infinite linear;
+    }
+    .center {
+        @include mat-elevation(8);
+        position: absolute;
+        border-radius: 20px;
+        height: 20px;
+        width: 20px;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .ball {
+        @include mat-elevation(8);
+        position: absolute;
+        left: 381px;
+        top: 155px;
+        height: 20px;
+        width: 20px;
+        border-radius: 20px;
+        background-color: #fff;
+    }
+}

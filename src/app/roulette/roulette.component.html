@@ -1,8 +1,10 @@
 <casino-container [hasWallpaper]="false" backgroundImage="assets/bg-roulette.png">
   <!-- <button id="btn-start" mat-button (click)="wheel.start()" *ngIf="showStartButton">START</button>
   <button id="btn-stop" mat-button (click)="wheel.stop()" *ngIf="showStopButton">STOP</button> -->
-  <img id="roulette-wheel" src="assets/roulette-wheel.png" [style.left.px]="wheel.offsetLeft" [style.top.px]="wheel.offsetTop"
-    [style.width.px]="wheel.diameter" [style.height.px]="wheel.diameter" (click)="wheel.startSpin()" [class.spin]="wheel.started">
-  <span class="center" [style.top.px]="wheel.centerPosition.top" [style.left.px]="wheel.centerPosition.left"></span>
-  <span class="ball" [style.top.px]="ball.positionTop" [style.left.px]="ball.positionLeft" *ngIf="wheel.started"></span>
+  <casino-roulette-wheel [diameter]="wheel.diameter" [offsetLeft]="wheel.offsetLeft" [offsetTop]="wheel.offsetTop"
+    [started]="wheel.started" [centerPositionTop]="wheel.centerPosition.top" [centerPositionLeft]="wheel.centerPosition.left"
+    [ballPositionTop]="ball.positionTop" [ballPositionLeft]="ball.positionLeft" (startSpin)="wheel.startSpin()"></casino-roulette-wheel>
+  <casino-roulette-spin [spin]="lastSpin" *ngIf="!testing"></casino-roulette-spin>
+  <casino-roulette-spin-history [spins]="spinHistory$ | async" *ngIf="!testing"></casino-roulette-spin-history>
+  <casino-roulette-spin-distribution [spins]="spinDistribution$ | async" *ngIf="testing"></casino-roulette-spin-distribution>
 </casino-container>

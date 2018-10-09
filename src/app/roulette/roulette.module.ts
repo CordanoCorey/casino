@@ -4,8 +4,9 @@ import { RouletteRoutingModule } from './roulette-routing.module';
 import { RouletteComponent } from './roulette.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouletteWheelComponent } from './roulette-wheel/roulette-wheel.component';
+import { RouletteSpinComponent } from './roulette-spin/roulette-spin.component';
 import { RouletteSpinHistoryComponent } from './roulette-spin-history/roulette-spin-history.component';
-import { RouletteLastSpinComponent } from './roulette-last-spin/roulette-last-spin.component';
+import { RouletteSpinDistributionComponent } from './roulette-spin-distribution/roulette-spin-distribution.component';
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { RouletteLastSpinComponent } from './roulette-last-spin/roulette-last-sp
   declarations: [
     RouletteComponent,
     RouletteWheelComponent,
+    RouletteSpinComponent,
     RouletteSpinHistoryComponent,
-    RouletteLastSpinComponent,
+    RouletteSpinDistributionComponent,
   ]
 })
 export class RouletteModule { }

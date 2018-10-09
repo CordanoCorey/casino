@@ -1,3 +1,3 @@
-<p>
-  roulette-spin-history works!
-</p>
+<div id="spin-history" class="scrollable">
+  <div *ngFor="let spin of spins" class="inline-spin">{{ spin.slotNumber }}</div>
+</div>

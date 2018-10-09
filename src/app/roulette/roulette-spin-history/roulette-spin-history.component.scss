@@ -1,0 +1,13 @@
+@import '~@angular/material/_theming';
+@import '../../../common';
+#spin-history {
+    @include mat-elevation(16);
+    background: rgba(0, 0, 0, 0.9);
+    height: 600px;
+    width: 200px;
+    .inline-spin {
+        color: #fff;
+        height: 50px;
+        width: 30%;
+    }
+}

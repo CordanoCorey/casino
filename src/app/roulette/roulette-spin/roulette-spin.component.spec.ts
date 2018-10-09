@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RouletteLastSpinComponent } from './roulette-last-spin.component';
+import { RouletteSpinComponent } from './roulette-spin.component';
 
-describe('RouletteLastSpinComponent', () => {
-  let component: RouletteLastSpinComponent;
-  let fixture: ComponentFixture<RouletteLastSpinComponent>;
+describe('RouletteSpinComponent', () => {
+  let component: RouletteSpinComponent;
+  let fixture: ComponentFixture<RouletteSpinComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RouletteLastSpinComponent ]
+      declarations: [ RouletteSpinComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RouletteLastSpinComponent);
+    fixture = TestBed.createComponent(RouletteSpinComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

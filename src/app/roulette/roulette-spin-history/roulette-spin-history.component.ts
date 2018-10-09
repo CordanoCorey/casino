@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { RouletteWheelSpin } from '../roulette.model';
 
 @Component({
   selector: 'casino-roulette-spin-history',
@@ -6,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./roulette-spin-history.component.scss']
 })
 export class RouletteSpinHistoryComponent implements OnInit {
+
+  @Input() spins: RouletteWheelSpin[] = [];
 
   constructor() { }
 

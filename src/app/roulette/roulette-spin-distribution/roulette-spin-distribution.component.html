@@ -1,0 +1,6 @@
+<mat-card class="spin-distribution scrollable">
+  <div class="spin-count" *ngFor="let obs of spinCountArray">
+    <h4>{{ obs.number }}</h4>
+    <span class="count" [style.width.px]="obs.count * 10" [style.color]="obs.color"></span>
+  </div>
+</mat-card>
