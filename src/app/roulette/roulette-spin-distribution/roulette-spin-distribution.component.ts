@@ -95,12 +95,14 @@ export class RouletteSpinDistributionComponent implements OnInit {
   constructor() { }
 
   @Input() set spins(value: RouletteWheelSpin[]) {
-    this._spins = value;
-    this.spinCounts = {};
-    value.forEach(x => {
-      const count = this.spinCounts[x.slotNumber] || 0;
-      this.spinCounts[x.slotNumber] = count + 1;
-    });
+    if (value) {
+      this._spins = value;
+      this.spinCounts = {};
+      value.forEach(x => {
+        const count = this.spinCounts[x.slotNumber] || 0;
+        this.spinCounts[x.slotNumber] = count + 1;
+      });
+    }
   }
 
   get spins(): RouletteWheelSpin[] {

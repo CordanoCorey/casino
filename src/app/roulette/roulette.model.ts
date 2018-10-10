@@ -35,7 +35,7 @@ export class Roulette extends Collection<RouletteWheelSpin> {
     addSpin(data: RouletteWheelSpin): Roulette {
         const spin = build(RouletteWheelSpin, data, {
             slotNumber: data.slotNumber === '35' && data.slotColor === 'red' ? '25' : data.slotNumber,
-        })
+        });
         return build(Roulette, this.update(spin));
     }
 
@@ -186,7 +186,7 @@ export class RouletteWheel {
             build(RouletteWheelSlot, { number: '00' }),
             build(RouletteWheelSlot, { number: '27' }),
             build(RouletteWheelSlot, { number: '10' }),
-            build(RouletteWheelSlot, { number: '35' }),
+            build(RouletteWheelSlot, { number: '25' }),
             build(RouletteWheelSlot, { number: '29' }),
             build(RouletteWheelSlot, { number: '12' }),
             build(RouletteWheelSlot, { number: '8' }),
@@ -480,7 +480,7 @@ export class RouletteWheel {
         this.status = 'TRANSITIONING';
         setTimeout(() => {
             this.reload();
-        }, 20000);
+        }, 2000);
     }
 
     stop() {

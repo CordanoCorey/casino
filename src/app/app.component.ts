@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SmartComponent, StorageService, RouterService, build } from '@caiu/library';
 import { Store } from '@ngrx/store';
 
@@ -12,7 +12,7 @@ import { RouletteActions } from './roulette/roulette.reducer';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent extends SmartComponent {
+export class AppComponent extends SmartComponent implements OnInit {
   title = 'casino';
 
   constructor(
@@ -33,6 +33,7 @@ export class AppComponent extends SmartComponent {
     return state => {
       const cashier = build(Cashier, state['cashier']);
       const roulette = build(Roulette, state['roulette']);
+      console.dir(roulette);
       return { cashier, roulette };
     };
   }

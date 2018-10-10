@@ -8,6 +8,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { TotalsComponent } from './totals/totals.component';
 import { RulesComponent } from './rules/rules.component';
 import { ChipValuesComponent } from './chip-values/chip-values.component';
+import { FloorMapComponent } from './floor-map/floor-map.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import { ChipValuesComponent } from './chip-values/chip-values.component';
     TotalsComponent,
     RulesComponent,
     ChipValuesComponent,
+    FloorMapComponent,
+    ScheduleComponent,
   ],
   exports: [
     LibraryModule,

@@ -76,7 +76,7 @@ export class RouletteComponent extends SmartComponent implements OnInit {
         this.wheel.startSpin();
         i++;
       }
-    }, 40000);
+    }, 20000);
   }
 
 }

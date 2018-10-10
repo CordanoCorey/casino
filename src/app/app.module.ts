@@ -27,14 +27,18 @@ import { ActionReducerMap } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { auctionReducer } from './auction/auction.reducer';
 import { cashierReducer } from './cashier/cashier.reducer';
 import { rouletteReducer } from './roulette/roulette.reducer';
+import { roundsReducer } from './rounds/rounds.reducer';
 import { SharedModule } from './shared/shared.module';
 
 
 export const reducers: ActionReducerMap<any> = {
+  auction: auctionReducer,
   cashier: cashierReducer,
-  roulette: rouletteReducer
+  rounds: roundsReducer,
+  roulette: rouletteReducer,
 };
 
 @NgModule({

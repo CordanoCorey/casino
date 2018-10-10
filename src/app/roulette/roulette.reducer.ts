@@ -1,4 +1,4 @@
-import { Action, compareNumbers } from '@caiu/library';
+import { Action, compareNumbers, StorageActions } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -26,7 +26,12 @@ export function rouletteReducer(state: Roulette = new Roulette(), action: Action
     switch (action.type) {
 
         case RouletteActions.ADD_SPIN:
+            // console.dir(action.payload.slotNumber);
             return state.addSpin(action.payload);
+
+        case StorageActions.INIT_STORE:
+            console.dir(action.payload);
+            return state;
 
         default:
             return state;
