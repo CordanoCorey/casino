@@ -65,7 +65,7 @@ export class RouletteComponent extends SmartComponent implements OnInit {
       this.lastSpinChanges,
     ]);
     this.wheel.start();
-    this.test();
+    this.test(1000);
   }
 
   test(sampleSize = 100) {

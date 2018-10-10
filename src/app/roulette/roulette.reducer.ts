@@ -26,8 +26,7 @@ export function rouletteReducer(state: Roulette = new Roulette(), action: Action
     switch (action.type) {
 
         case RouletteActions.ADD_SPIN:
-            console.dir(action.payload.slotNumber);
-            return state.update(action.payload);
+            return state.addSpin(action.payload);
 
         default:
             return state;

@@ -32,7 +32,7 @@ export class AppComponent extends SmartComponent {
   get localStorageMapper(): (s: any) => any {
     return state => {
       const cashier = build(Cashier, state['cashier']);
-      const roulette = build(Roulette, state['roulette'])
+      const roulette = build(Roulette, state['roulette']);
       return { cashier, roulette };
     };
   }
@@ -46,12 +46,6 @@ export class AppComponent extends SmartComponent {
   }
 
   ngOnInit() {
-    this.storage.init(this.localStorageMapper, this.sessionStorageMapper, this.localStorageActions, this.sessionStorageActions);
-
-    this.initStorage();
-  }
-
-  initStorage() {
     this.storage.init(this.localStorageMapper, this.sessionStorageMapper, this.localStorageActions, this.sessionStorageActions);
   }
 

@@ -21,12 +21,24 @@ export class RouletteWheelSpin {
         return this.slot.number;
     }
 
+    set slotNumber(value: string) {
+        this.slot.number = value;
+    }
+
 }
 
 export class Roulette extends Collection<RouletteWheelSpin> {
     constructor() {
         super(RouletteWheelSpin);
     }
+
+    addSpin(data: RouletteWheelSpin): Roulette {
+        const spin = build(RouletteWheelSpin, data, {
+            slotNumber: data.slotNumber === '35' && data.slotColor === 'red' ? '25' : data.slotNumber,
+        })
+        return build(Roulette, this.update(spin));
+    }
+
 }
 
 export class RouletteWheel {
@@ -595,7 +607,7 @@ export class RouletteWheelSlot {
                 return 'Red';
             case '10':
                 return 'Black';
-            case '35':
+            case '25':
                 return 'Red';
             case '29':
                 return 'Black';
