@@ -1,37 +1,55 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
+
 .auction-items {
-    color: $primary-color;
-    z-index: 3;
-    width: 200px;
-    height: 100%;
-    margin: 0px;
-    overflow: auto;
-    .col {
-        display: inline-block;
-    }
-    .item-name {
-        width: 30%;
-    }
-    .price {
-        width: 25%;
-    }
-    .end-time {
-        width: 20%;
-    }
-    .auction-item-columns {
-        font-size: 16px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-    .auction-item {
-        padding: 5px 0;
-        font-size: 16px;
-    }
-    .pink {
-        color: $baby-pink;
-    }
-    .blue {
-        color: $baby-blue;
-    }
+  color: $primary-color;
+  z-index: 3;
+  width: 180px;
+  height: 100%;
+  margin: 0px;
+  overflow: auto;
+  padding: 0 20px;
+  background: rgba(0, 0, 0, 0.3);
+
+  .col {
+    display: inline-block;
+  }
+
+  .item-name {
+    width: 30%;
+  }
+
+  .price {
+    width: 25%;
+  }
+
+  .end-time {
+    width: 20%;
+  }
+
+  .auction-item-columns {
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .auction-item {
+    padding: 5px 0;
+    font-size: 16px;
+  }
+
+  .pink {
+    color: $baby-pink;
+  }
+
+  .blue {
+    color: $baby-blue;
+  }
+
+  casino-auction-item-preview {
+    position: relative;
+    display: block;
+    margin: 20px 0;
+    height: 120px;
+  }
 }

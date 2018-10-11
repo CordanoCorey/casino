@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { build, Time, SmartComponent, TimerComponent } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
-import { totalsSelector, chipValueSelector, RoundsActions, currentRoundIdSelector } from '../rounds.reducer';
+import { RoundsActions, currentRoundSelector } from '../rounds.reducer';
 import { Totals } from '../../shared/models';
 import { Round } from '../rounds.model';
 
 @Component({
   selector: 'casino-round-live',
   templateUrl: './round-live.component.html',
-  styleUrls: ['./round-live.component.scss']
+  styleUrls: ['./round-live.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RoundLiveComponent extends SmartComponent implements OnInit {
 
@@ -18,34 +19,38 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
   countdownFrom = build(Time, {
     minutes: 1,
   });
-  chipValue$: Observable<number>;
-  currentRoundId = 0;
-  currentRoundId$: Observable<number>;
-  totals$: Observable<Totals>;
+  currentRound: Round = new Round();
+  currentRound$: Observable<Round>;
   roundNumber = 1;
 
   constructor(public store: Store<any>) {
     super(store);
-    this.chipValue$ = chipValueSelector(store);
-    this.currentRoundId$ = currentRoundIdSelector(store);
-    this.totals$ = totalsSelector(store);
+    this.currentRound$ = currentRoundSelector(store);
   }
 
-  get currentRoundIdChanges(): Subscription {
-    return this.currentRoundId$.subscribe(id => {
-      this.currentRoundId = id;
+  get currentRoundChanges(): Subscription {
+    return this.currentRound$.subscribe(x => {
+      this.currentRound = x;
     });
+  }
+
+  get exchangeRate(): number {
+    return this.totals.chipValue / 100;
+  }
+
+  get totals(): Totals {
+    return this.currentRound.totals;
   }
 
   ngOnInit() {
     this.subscribe([
-      this.currentRoundIdChanges,
+      this.currentRoundChanges,
     ]);
   }
 
   onSaveRound(totals: Totals) {
     this.saveRound(build(Round, {
-      id: this.currentRoundId,
+      id: this.currentRound.id,
       totals
     }));
   }

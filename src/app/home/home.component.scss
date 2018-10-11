@@ -1,24 +1,38 @@
 @import '~@angular/material/_theming';
 @import '../../common';
+
 #inner-content {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  casino-auction-items,
+  casino-round-live,
+  casino-rounds {
+    z-index: 9;
+  }
+
+  casino-auction-items {
+    position: fixed;
+    left: 0;
+    top: 0px;
+  }
+
+  casino-round-live {
+    margin: 120px auto;
     display: block;
-    casino-auction-items,
-    casino-round-live,
-    casino-rounds {
-        z-index: 9;
-    }
-    casino-auction-items {
-        position: absolute;
-        left: 0;
-        top: 50px;
-    }
-    casino-round-live {
-        @include mat-elevation(16);
-        margin: 120px auto;
-        display: block;
-        width: 600px;
-        height: 500px;
-    }
+    width: 50%;
+    height: 70%;
+    z-index: 9;
+    position: absolute;
+    top: 0%;
+    left: 25%;
+  }
+
+  casino-rounds {
+    position: fixed;
+    right: 0;
+    top: 0px;
+    padding: 0;
+  }
 }

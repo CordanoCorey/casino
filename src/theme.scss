@@ -14,4 +14,4 @@ $theme: mat-light-theme($primary-palette, $accent-palette);
 }
 
 @include iu-palette($primary-palette, $accent-palette);
-@include scrollable(#fff, $primary-color);
+@include scrollable($baby-pink, $baby-blue);

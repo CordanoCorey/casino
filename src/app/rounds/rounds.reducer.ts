@@ -1,4 +1,4 @@
-import { Action } from '@caiu/library';
+import { Action, compareNumbers } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export function roundsSelector(store: Store<any>): Observable<Rounds> {
 
 export function roundsHistorySelector(store: Store<any>): Observable<Round[]> {
     return roundsSelector(store).pipe(
-        map(x => x.asArray)
+        map(x => x.asArray.sort((a, b) => compareNumbers(-a.id, -b.id)))
     );
 }
 

@@ -11,7 +11,8 @@
   background-size: cover;
   background-attachment: fixed;
   position: absolute;
-  overflow-y: auto;
+  //overflow-y: auto;
+  overflow: hidden;
   z-index: 1;
 
   #help {

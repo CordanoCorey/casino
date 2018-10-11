@@ -1,4 +1,4 @@
-<mat-card class="rounds">
+<!-- <mat-card class="rounds">
   <div class="round-column">
     <div class="round-number">Round Number</div>
     <div class="chip-value">Chip Value</div>
@@ -7,4 +7,11 @@
     <div class="round-number">{{ round.id }}</div>
     <div class="chip-value">{{ round.chipValue }}</div>
   </div>
-</mat-card>
+</mat-card> -->
+
+<div class="rounds scrollable">
+  <div class="inline-round" *ngFor="let round of rounds$ | async" [style.background-color]="colors[round.id]">
+    <div class="round-number">{{ round.id }}</div>
+    <div class="chip-value">{{ round.chipValue | number }} <span>&#162;</span></div>
+  </div>
+</div>

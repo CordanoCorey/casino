@@ -1,8 +1,26 @@
-<div class="item-preview" [style.background-image]="'url(' + backgroundImage + ')'">
+<!-- <div class="item-preview" [style.background-image]="'url(' + backgroundImage + ')'">
   <div class="item-name col">{{ item.name }}</div>
   <div *ngIf="item.cash" class="price col">{{ item.startPrice | currency }}</div>
   <div *ngIf="item.chips" class="price col">{{ item.startPrice }} chips</div>
   <div class="end-time col">{{ item.endTime | date:'shortTime' }}</div>
   <div *ngIf="item.cash" class="price col">{{ item.salePrice | currency }}</div>
   <div *ngIf="item.chips" class="price col">{{ item.salePrice }} chips</div>
+</div> -->
+
+<div class="item-preview" fxLayout fxLayoutAlign="center center">
+  <div class="end-time">{{ item.endTime | date:'shortTime' }}</div>
+  <div class="item-name">{{ item.name }}</div>
+  <div class="start-price">
+    <span class="label">Start</span>
+    <div *ngIf="item.cash" class="price">{{ item.startPrice | currency }}</div>
+    <div *ngIf="item.chips" class="price">{{ item.startPrice }} chips</div>
+  </div>
+  <div class="end-price">
+    <span class="label">End</span>
+    <div *ngIf="item.cash && item.ended" class="price">{{ item.salePrice | currency }}</div>
+    <div *ngIf="item.chips && item.ended" class="price">{{ item.salePrice }} chips</div>
+    <div *ngIf="!item.ended" class="price">N/A</div>
+  </div>
+  <img class="bg" [src]="backgroundImage">
+  <img class="item-image" [src]="item.imageSrc">
 </div>

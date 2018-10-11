@@ -1,2 +1,42 @@
 @import '~@angular/material/_theming';
 @import '../../common';
+
+.rounds {
+  overflow-y: auto;
+  overflow-x: hidden;
+  //width: 150px;
+  height: 100%;
+
+  .inline-round {
+    @include mat-elevation(8);
+    height: 50px;
+    width: 150px;
+
+    .round-number {
+      @include mat-elevation(16);
+      color: #fff;
+      height: 50px;
+      width: 50px;
+      float: left;
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+      font-size: 32px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 50px;
+    }
+
+    .chip-value {
+      color: #fff;
+      height: 50px;
+      width: 100px;
+      float: right;
+      text-align: center;
+      font-size: 24px;
+      line-height: 50px;
+    }
+  }
+}

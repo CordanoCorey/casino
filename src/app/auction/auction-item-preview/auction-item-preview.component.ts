@@ -10,9 +10,22 @@ import { AuctionItem } from '../auction.model';
 export class AuctionItemPreviewComponent implements OnInit {
 
   @Input() item: AuctionItem = new AuctionItem();
-  backgroundImage = 'assets/ace-of-spades.png';
+  @Input() order = 0;
 
   constructor() { }
+
+  get backgroundImage(): string {
+    switch (this.order % 4) {
+      case 0:
+        return 'assets/ace-of-spades.png';
+      case 1:
+        return 'assets/ace-of-hearts.png';
+      case 2:
+        return 'assets/ace-of-clubs.png';
+      case 3:
+        return 'assets/ace-of-diamonds.png';
+    }
+  }
 
   ngOnInit() {
   }
