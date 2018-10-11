@@ -1,10 +1,6 @@
-<div class="round-live">
-  <mat-card>
+<mat-card class="round-live">
     <iu-timer [countUp]="false" [countDown]="true" [countdownFrom]="countdownFrom" (timesUp)="onTimesUp()"></iu-timer>
     <h2>{{ remainingRounds }}</h2>
-  </mat-card>
-  <mat-card>
     <casino-totals [totals]="totals$ | async" (save)="onSaveTotals($event)"></casino-totals>
     <casino-exchange-rate [chipValue]="chipValue$ | async"></casino-exchange-rate>
-  </mat-card>
-</div>
+</mat-card>

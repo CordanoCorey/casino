@@ -1,3 +1,14 @@
 <form [formGroup]="form">
-
+    <mat-form-field>
+        <input matInput placeholder="Auction Item Name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Sale Price Cash" type="number" formControlName="salePriceCash">
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Sale Price Chips" type="number" formControlName="salePriceChips">
+        <span matSuffix>chips</span>
+    </mat-form-field>
 </form>

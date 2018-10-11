@@ -22,7 +22,7 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
   currentRoundId = 0;
   currentRoundId$: Observable<number>;
   totals$: Observable<Totals>;
-  remainingRounds = 30;
+  roundNumber = 1;
 
   constructor(public store: Store<any>) {
     super(store);
@@ -52,7 +52,7 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
 
   onTimesUp() {
     this.timer.startAt(this.countdownFrom);
-    this.remainingRounds -= 1;
+    this.roundNumber += 1;
   }
 
   saveRound(data: Round) {

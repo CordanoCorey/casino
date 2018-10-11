@@ -1,2 +1,9 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
+.round-live {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    height: 100%;
+    width: 100%;
+    z-index: 9;
+}

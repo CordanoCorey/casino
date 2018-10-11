@@ -1,0 +1,8 @@
+<div class="item-preview" [style.background-image]="'url(' + backgroundImage + ')'">
+  <div class="item-name col">{{ item.name }}</div>
+  <div *ngIf="item.cash" class="price col">{{ item.startPrice | currency }}</div>
+  <div *ngIf="item.chips" class="price col">{{ item.startPrice }} chips</div>
+  <div class="end-time col">{{ item.endTime | date:'shortTime' }}</div>
+  <div *ngIf="item.cash" class="price col">{{ item.salePrice | currency }}</div>
+  <div *ngIf="item.chips" class="price col">{{ item.salePrice }} chips</div>
+</div>

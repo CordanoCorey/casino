@@ -1,4 +1,4 @@
-<mat-card class="auction-items scrollable">
+<!-- <mat-card class="auction-items scrollable">
   <div class="auction-item-columns">
     <div class="item-name col">Auction Item</div>
     <div class="price col">Start Price</div>
@@ -14,4 +14,9 @@
     <div *ngIf="item.cash" class="price col">{{ item.salePrice | currency }}</div>
     <div *ngIf="item.chips" class="price col">{{ item.salePrice }} chips</div>
   </div>
-</mat-card>
+</mat-card> -->
+
+
+<div class="auction-items scrollable">
+  <casino-auction-item-preview *ngFor="let item of auctionItems$ | async" [item]="item"></casino-auction-item-preview>
+</div>

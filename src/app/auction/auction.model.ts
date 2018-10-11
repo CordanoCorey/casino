@@ -1,13 +1,27 @@
-import { Collection, build } from '@caiu/library';
+import { Collection, build, Metadata } from '@caiu/library';
 
 export class AuctionItem {
     id = 0;
     endTime: Date = new Date();
+    imageSrc = '';
     name = '';
+    round = 0;
     salePriceCash = 0;
     salePriceChips = 0;
     startPriceCash = 0;
     startPriceChips = 0;
+
+    get metadata(): Metadata {
+        return build(Metadata, {
+            ignore: [
+                'cash',
+                'chips',
+                'ended',
+                'salePrice',
+                'startPrice',
+            ]
+        });
+    }
 
     get cash(): boolean {
         return this.startPriceCash > 0;

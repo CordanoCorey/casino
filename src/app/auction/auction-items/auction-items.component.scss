@@ -1,49 +1,37 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
-
 .auction-items {
-  background: rgba(0, 0, 0, 0.5);
-  background-color: #fff;
-  opacity: 0.8;
-  color: $primary-color;
-  z-index: 3;
-  width: 400px;
-  height: 600px;
-  margin: 20px;
-  overflow: auto;
-
-  .col {
-    display: inline-block;
-  }
-
-  .item-name {
-    width: 30%;
-  }
-
-  .price {
-    width: 25%;
-  }
-
-  .end-time {
-    width: 20%;
-  }
-
-  .auction-item-columns {
-    font-size: 16px;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-
-  .auction-item {
-    padding: 5px 0;
-    font-size: 16px;
-  }
-
-  .pink {
-    color: $baby-pink;
-  }
-
-  .blue {
-    color: $baby-blue;
-  }
+    color: $primary-color;
+    z-index: 3;
+    width: 200px;
+    height: 100%;
+    margin: 0px;
+    overflow: auto;
+    .col {
+        display: inline-block;
+    }
+    .item-name {
+        width: 30%;
+    }
+    .price {
+        width: 25%;
+    }
+    .end-time {
+        width: 20%;
+    }
+    .auction-item-columns {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .auction-item {
+        padding: 5px 0;
+        font-size: 16px;
+    }
+    .pink {
+        color: $baby-pink;
+    }
+    .blue {
+        color: $baby-blue;
+    }
 }
