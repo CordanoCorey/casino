@@ -1,0 +1,17 @@
+<mat-card class="auction-items scrollable">
+  <div class="auction-item-columns">
+    <div class="item-name col">Auction Item</div>
+    <div class="price col">Start Price</div>
+    <div class="end-time col">End Time</div>
+    <div class="price col">Sale Price</div>
+  </div>
+  <div class="auction-item" [class.ended]="item.ended" [class.pink]="item.name === 'Baby Pink Chip'" [class.blue]="item.name === 'Baby Blue Chip'"
+    *ngFor="let item of auctionItems$ | async">
+    <div class="item-name col">{{ item.name }}</div>
+    <div *ngIf="item.cash" class="price col">{{ item.startPrice | currency }}</div>
+    <div *ngIf="item.chips" class="price col">{{ item.startPrice }} chips</div>
+    <div class="end-time col">{{ item.endTime | date:'shortTime' }}</div>
+    <div *ngIf="item.cash" class="price col">{{ item.salePrice | currency }}</div>
+    <div *ngIf="item.chips" class="price col">{{ item.salePrice }} chips</div>
+  </div>
+</mat-card>

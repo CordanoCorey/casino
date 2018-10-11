@@ -50,6 +50,7 @@ export const reducers: ActionReducerMap<any> = {
     BrowserAnimationsModule,
     BrowserModule,
     EffectsModule.forRoot([
+      StorageEffects,
     ]),
     FlexLayoutModule,
     FormsModule,

@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SmartComponent, StorageService, RouterService, build } from '@caiu/library';
 import { Store } from '@ngrx/store';
 
-import { Cashier } from './cashier/cashier.model';
-import { CashierActions } from './cashier/cashier.reducer';
+import { Auction } from './auction/auction.model';
+import { AuctionActions } from './auction/auction.reducer';
 import { Roulette } from './roulette/roulette.model';
 import { RouletteActions } from './roulette/roulette.reducer';
+import { Rounds } from './rounds/rounds.model';
+import { RoundsActions } from './rounds/rounds.reducer';
 
 @Component({
   selector: 'casino-root',
@@ -24,17 +26,18 @@ export class AppComponent extends SmartComponent implements OnInit {
 
   get localStorageActions(): string[] {
     return [
-      ...CashierActions.ALL,
+      ...AuctionActions.ALL,
       ...RouletteActions.ALL,
+      ...RoundsActions.ALL,
     ];
   }
 
   get localStorageMapper(): (s: any) => any {
-    return state => {
-      const cashier = build(Cashier, state['cashier']);
+    return (state) => {
+      const auction = build(Auction, state['auction']);
       const roulette = build(Roulette, state['roulette']);
-      console.dir(roulette);
-      return { cashier, roulette };
+      const rounds = build(Rounds, state['rounds']);
+      return { auction, roulette, rounds };
     };
   }
 

@@ -6,6 +6,14 @@ export class RouletteWheelSpin {
     position: PixelPosition = new PixelPosition();
     slot: RouletteWheelSlot = new RouletteWheelSlot();
 
+    static Build(data: RouletteWheelSpin): RouletteWheelSpin {
+        return build(RouletteWheelSpin, data, {
+            id: data.moment,
+            slot: build(RouletteWheelSlot, data.slot),
+            position: build(PixelPosition, data.position)
+        });
+    }
+
     get id(): number {
         return this.moment;
     }
@@ -37,6 +45,13 @@ export class Roulette extends Collection<RouletteWheelSpin> {
             slotNumber: data.slotNumber === '35' && data.slotColor === 'red' ? '25' : data.slotNumber,
         });
         return build(Roulette, this.update(spin));
+    }
+
+    restore(data: Roulette): Roulette {
+        const items = Object.keys(data._items).reduce((acc, key) => {
+            return Object.assign({}, acc, { [key]: RouletteWheelSpin.Build(data._items[key]) });
+        }, {});
+        return build(Roulette, { items });
     }
 
 }

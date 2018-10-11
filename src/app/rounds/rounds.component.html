@@ -1,3 +1,10 @@
-<p>
-  rounds works!
-</p>
+<mat-card class="rounds">
+  <div class="round-column">
+    <div class="round-number">Round Number</div>
+    <div class="chip-value">Chip Value</div>
+  </div>
+  <div class="inline-round" *ngFor="let round of rounds$ | async">
+    <div class="round-number">{{ round.id }}</div>
+    <div class="chip-value">{{ round.chipValue }}</div>
+  </div>
+</mat-card>

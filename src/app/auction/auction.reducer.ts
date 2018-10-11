@@ -7,13 +7,24 @@ import { Auction, AuctionItem } from './auction.model';
 
 export class AuctionActions {
     static SAVE = '[Auction] SAVE';
+    static get ALL(): string[] {
+        return [
+            AuctionActions.SAVE,
+        ];
+    }
+
+    static save(payload: Auction): Action {
+        return {
+            type: AuctionActions.SAVE,
+            payload
+        };
+    }
 }
 
 export function auctionReducer(state: Auction = new Auction(), action: Action): Auction {
     switch (action.type) {
 
         case AuctionActions.SAVE:
-            console.dir(action.payload);
             return state.update(action.payload);
 
         default:

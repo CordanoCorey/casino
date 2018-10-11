@@ -44,7 +44,6 @@ export function cashierSelector(store: Store<any>): Observable<Cashier> {
     return store.select('cashier');
 }
 
-
 export function totalsSelector(store: Store<any>): Observable<Totals> {
     return cashierSelector(store).pipe(
         map(x => x.totals)

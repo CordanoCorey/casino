@@ -1,10 +1,2 @@
 <casino-container [hasWallpaper]="false" backgroundImage="assets/bg-cashier.jpg">
-  <mat-card>
-    <iu-timer [countUp]="false" [countDown]="true" [countdownFrom]="countdownFrom" (timesUp)="onTimesUp()"></iu-timer>
-    <h2>{{ remainingRounds }}</h2>
-  </mat-card>
-  <mat-card>
-    <casino-totals [totals]="totals$ | async" (save)="onSaveTotals($event)"></casino-totals>
-    <casino-exchange-rate [chipValue]="chipValue$ | async"></casino-exchange-rate>
-  </mat-card>
 </casino-container>
