@@ -37,11 +37,12 @@ export class AppComponent extends SmartComponent implements OnInit {
 
   get localStorageMapper(): (s: any) => any {
     return (state) => {
-      const auction = build(Auction, state ? state['auction'] : {});
-      const cashier = build(Cashier, state ? state['cashier'] : {});
-      const roulette = build(Roulette, state ? state['roulette'] : {});
-      const rounds = build(Rounds, state ? state['rounds'] : {});
-      return { auction, cashier, roulette, rounds };
+      // const auction = build(Auction, state ? state['auction'] : {});
+      // const cashier = build(Cashier, state ? state['cashier'] : {});
+      // const roulette = build(Roulette, state ? state['roulette'] : {});
+      // const rounds = build(Rounds, state ? state['rounds'] : {});
+      // return { auction, cashier, roulette, rounds };
+      return {};
     };
   }
 
