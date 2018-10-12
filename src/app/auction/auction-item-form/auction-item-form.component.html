@@ -1,14 +1,25 @@
 <form [formGroup]="form">
-    <mat-form-field>
-        <input matInput placeholder="Auction Item Name" formControlName="name">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Sale Price Cash" type="number" formControlName="salePriceCash">
-        <span matPrefix>$&nbsp;</span>
-        <!-- <span matSuffix>.00</span> -->
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Sale Price Chips" type="number" formControlName="salePriceChips">
-        <span matSuffix>chips</span>
-    </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="ID" type="number" formControlName="id">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Auction Item Name" formControlName="name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Start Price Cash" type="number" formControlName="startPriceCash">
+    <span matPrefix>$&nbsp;</span>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Start Price Chips" type="number" formControlName="startPriceChips">
+    <span matSuffix>chips</span>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Sale Price Cash" type="number" formControlName="salePriceCash">
+    <span matPrefix>$&nbsp;</span>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Sale Price Chips" type="number" formControlName="salePriceChips">
+    <span matSuffix>chips</span>
+  </mat-form-field>
+  <button mat-raised-button class="btn-save" (click)="save()">SAVE</button>
 </form>

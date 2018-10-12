@@ -24,7 +24,7 @@ export class AuctionItemFormComponent extends SmartComponent implements OnInit {
   }
 
   get valueOut(): AuctionItem {
-    return build(AuctionItem, this.form.value);
+    return build(AuctionItem, this.data, this.form.value);
   }
 
   ngOnInit() {

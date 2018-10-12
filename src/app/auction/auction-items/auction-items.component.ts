@@ -28,6 +28,10 @@ export class AuctionItemsComponent extends SmartComponent implements OnInit {
   ngOnInit() {
   }
 
+  createNew() {
+    this.edit(new AuctionItem());
+  }
+
   edit(data: AuctionItem) {
     super.openDialog(AuctionItemFormComponent, {
       data

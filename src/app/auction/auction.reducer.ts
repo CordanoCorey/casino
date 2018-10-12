@@ -25,6 +25,7 @@ export function auctionReducer(state: Auction = new Auction(), action: Action): 
     switch (action.type) {
 
         case AuctionActions.SAVE:
+            console.dir(action.payload);
             return state.update(action.payload);
 
         default:
