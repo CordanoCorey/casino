@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { SmartComponent, Control, build } from '@caiu/library';
 import { Store } from '@ngrx/store';
@@ -27,6 +27,50 @@ export class TransactionComponent extends SmartComponent implements OnInit, OnDe
     this.chipValue$ = chipValueSelector(store);
   }
 
+  get cash(): number {
+    return this.cashTotalControl.value;
+  }
+
+  get chips(): number {
+    return this.chipTotalControl.value;
+  }
+
+  get cashFromChips(): number {
+    return this.chips2cash(this.chips);
+  }
+
+  get chipsFromCash(): number {
+    return this.cash2chips(this.cash);
+  }
+
+  get cashTotalControl(): AbstractControl {
+    return this.form.controls['cashTotal'];
+  }
+
+  get cashTotalChanges(): Subscription {
+    return this.cashTotalControl.valueChanges.subscribe(cashTotal => {
+      const chips = this.cash2chips(cashTotal);
+      // console.log(this.chipValue, cashTotal, chips, this.chipTotalControl.value);
+      if (this.chipTotalControl.value !== chips) {
+        // this.chipTotalControl.setValue(chips);
+      }
+    });
+  }
+
+  get chipTotalControl(): AbstractControl {
+    return this.form.controls['chipTotal'];
+  }
+
+  get chipTotalChanges(): Subscription {
+    return this.cashTotalControl.valueChanges.subscribe(chipTotal => {
+      const cash = this.chips2cash(chipTotal);
+      // console.log(this.chipValue, cash, chipTotal, this.cashTotalControl.value);
+      if (this.cashTotalControl.value !== cash) {
+        // this.cashTotalControl.setValue(cash);
+      }
+    });
+  }
+
   get chipValueChanges(): Subscription {
     return this.chipValue$.subscribe(x => {
       this.chipValue = x;
@@ -38,16 +82,23 @@ export class TransactionComponent extends SmartComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
-    if (this.data) {
-      this.setValue(this.data);
-    }
     this.subscribe([
       this.chipValueChanges,
+      this.cashTotalChanges,
+      this.chipTotalChanges,
     ]);
   }
 
   ngOnDestroy() {
     this.setValue(new Transaction());
+  }
+
+  cash2chips(cash: number): number {
+    return cash * (100 / this.chipValue);
+  }
+
+  chips2cash(chips: number): number {
+    return chips * this.chipValue / 100;
   }
 
   save() {

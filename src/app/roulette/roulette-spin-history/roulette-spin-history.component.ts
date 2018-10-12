@@ -33,10 +33,6 @@ export class RouletteSpinHistoryComponent implements OnInit {
   ngOnInit() {
   }
 
-  ngOnChanges() {
-    console.dir(this.spins);
-  }
-
   isBlack(spin: RouletteWheelSpin): boolean {
     return spin.slotColor === 'Black';
   }

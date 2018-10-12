@@ -63,6 +63,7 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
   }
 
   onTimesUp() {
+    this.playSound();
     this.saveRound(build(Round, {
       id: this.roundNumber,
       totals: this.totals,
@@ -73,6 +74,11 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
 
   saveRound(data: Round) {
     this.dispatch(RoundsActions.save(data));
+  }
+
+  private playSound() {
+    const audio = new Audio('assets/buzzer.mp3');
+    audio.play();
   }
 
 }

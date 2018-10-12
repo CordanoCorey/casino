@@ -63,6 +63,7 @@ export class RouletteWheel {
     ballDistanceFromCenterFinalOffset = 0;
     ballDistanceFromCenterStoppedOffset = 50;
     ballSubject = new BehaviorSubject<RouletteBall>(new RouletteBall());
+    currentSpinStartMoment = 0;
     lastSpin: RouletteWheelSpin;
     lastSpinSubject = new Subject<RouletteWheelSpin>();
     momentSubject = new BehaviorSubject<number>(0);
@@ -78,6 +79,30 @@ export class RouletteWheel {
 
     static ArcLength(diameter: number, centralAngle: number): number {
         return Math.PI * diameter * (centralAngle / 360);
+    }
+
+    static Degrees2CentralAngleClockwise(degrees: number): number {
+        if (degrees <= 90) { // Q1
+            return 90 - degrees;
+        } else if (degrees <= 180) { // Q2
+            return degrees - 90;
+        } else if (degrees <= 270) { // Q3
+            return 270 - degrees;
+        } else { // Q4
+            return degrees - 270;
+        }
+    }
+
+    static Degrees2CentralAngleCounterClockwise(degrees: number): number {
+        if (degrees <= 90) { // Q4
+            return 90 - degrees;
+        } else if (degrees <= 180) { // Q3
+            return degrees - 90;
+        } else if (degrees <= 270) { // Q2
+            return 270 - degrees;
+        } else { // Q1
+            return degrees - 270;
+        }
     }
 
     static Degrees2Radians(degrees: number) {
@@ -146,30 +171,6 @@ export class RouletteWheel {
         }
     }
 
-    static Degrees2CentralAngleClockwise(degrees: number): number {
-        if (degrees <= 90) { // Q1
-            return 90 - degrees;
-        } else if (degrees <= 180) { // Q2
-            return degrees - 90;
-        } else if (degrees <= 270) { // Q3
-            return 270 - degrees;
-        } else { // Q4
-            return degrees - 270;
-        }
-    }
-
-    static Degrees2CentralAngleCounterClockwise(degrees: number): number {
-        if (degrees <= 90) { // Q4
-            return 90 - degrees;
-        } else if (degrees <= 180) { // Q3
-            return degrees - 90;
-        } else if (degrees <= 270) { // Q2
-            return 270 - degrees;
-        } else { // Q1
-            return degrees - 270;
-        }
-    }
-
     static RotateDegreesClockwise(startDegreesClockwise: number, rotateDegrees: number): number {
         return (startDegreesClockwise + rotateDegrees) % 360;
     }
@@ -198,27 +199,8 @@ export class RouletteWheel {
         public offsetLeft = 0,
         public offsetTop = 0,
         public wheelSecondsPerRevolution = 5,
-        public ballSecondsPerRevolution = 2) {
+        public ballRevolutionsPerSpin = 8) {
         this.slots = [
-            build(RouletteWheelSlot, { number: '00' }),
-            build(RouletteWheelSlot, { number: '27' }),
-            build(RouletteWheelSlot, { number: '10' }),
-            build(RouletteWheelSlot, { number: '25' }),
-            build(RouletteWheelSlot, { number: '29' }),
-            build(RouletteWheelSlot, { number: '12' }),
-            build(RouletteWheelSlot, { number: '8' }),
-            build(RouletteWheelSlot, { number: '19' }),
-            build(RouletteWheelSlot, { number: '31' }),
-            build(RouletteWheelSlot, { number: '18' }),
-            build(RouletteWheelSlot, { number: '6' }),
-            build(RouletteWheelSlot, { number: '21' }),
-            build(RouletteWheelSlot, { number: '33' }),
-            build(RouletteWheelSlot, { number: '16' }),
-            build(RouletteWheelSlot, { number: '4' }),
-            build(RouletteWheelSlot, { number: '23' }),
-            build(RouletteWheelSlot, { number: '35' }),
-            build(RouletteWheelSlot, { number: '14' }),
-            build(RouletteWheelSlot, { number: '2' }),
             build(RouletteWheelSlot, { number: '0' }),
             build(RouletteWheelSlot, { number: '28' }),
             build(RouletteWheelSlot, { number: '9' }),
@@ -238,6 +220,25 @@ export class RouletteWheel {
             build(RouletteWheelSlot, { number: '36' }),
             build(RouletteWheelSlot, { number: '13' }),
             build(RouletteWheelSlot, { number: '1' }),
+            build(RouletteWheelSlot, { number: '00' }),
+            build(RouletteWheelSlot, { number: '27' }),
+            build(RouletteWheelSlot, { number: '10' }),
+            build(RouletteWheelSlot, { number: '25' }),
+            build(RouletteWheelSlot, { number: '29' }),
+            build(RouletteWheelSlot, { number: '12' }),
+            build(RouletteWheelSlot, { number: '8' }),
+            build(RouletteWheelSlot, { number: '19' }),
+            build(RouletteWheelSlot, { number: '31' }),
+            build(RouletteWheelSlot, { number: '18' }),
+            build(RouletteWheelSlot, { number: '6' }),
+            build(RouletteWheelSlot, { number: '21' }),
+            build(RouletteWheelSlot, { number: '33' }),
+            build(RouletteWheelSlot, { number: '16' }),
+            build(RouletteWheelSlot, { number: '4' }),
+            build(RouletteWheelSlot, { number: '23' }),
+            build(RouletteWheelSlot, { number: '35' }),
+            build(RouletteWheelSlot, { number: '14' }),
+            build(RouletteWheelSlot, { number: '2' }),
         ];
     }
 
@@ -253,7 +254,7 @@ export class RouletteWheel {
         return this._ball || this.ballBeforeSpin;
     }
 
-    get ballBeforeSpin(): RouletteBall { // TODO: make this position random
+    get ballBeforeSpin(): RouletteBall {
         const position = RouletteWheel.GetPosition(this.centerPosition, (this.randomSlotNumber * this.slotCentralAngle) % 360, this.ballDistanceFromCenterInitial);
         return build(RouletteBall, { position });
     }
@@ -262,16 +263,24 @@ export class RouletteWheel {
         return this.ballSubject.asObservable();
     }
 
-    get ballDegreesTraversedPerMomentAverage(): number { // TODO: read from ball motion model
-        return (this.ballRevolutionsPerSpin * 360) / this.momentsPerSpin;
+    // get ballDegreesTraversedLastMoment(): number {
+    //     return this.getBallDegreesTraversedAtTime(this.moment) - this.getBallDegreesTraversedAtTime(Math.max(this.moment - 1, 1));
+    // }
+
+    get ballDegreesTraversedPerSpin(): number {
+        return this.ballRevolutionsPerSpin * 360;
     }
 
-    get ballDistanceTraversedPerSpin(): number {
+    get ballDistanceCoveredTotal(): number {
+        return this.getBallMotionIntegralAtTime(this.lastMomentForCurrentSpin);
+    }
+
+    get ballDistanceGainedPerSpin(): number {
         return this.ballDistanceFromCenterInitial - this.ballDistanceFromCenterFinal;
     }
 
-    get ballDistanceTraversedPerMomentAverage(): number {
-        return this.ballDistanceTraversedPerSpin / this.momentsPerSpin;
+    get ballDistanceGainedLastMoment(): number {
+        return this.getBallDistanceGainedAtTime(this.moment) - this.getBallDistanceGainedAtTime(Math.max(this.moment - 1, 1));
     }
 
     get ballDistanceFromCenter(): number {
@@ -291,11 +300,9 @@ export class RouletteWheel {
     }
 
     get ballMotionConstant(): number {
-        return this.ballDistanceTraversedPerSpin / Math.log(this.totalSpinSeconds * this.momentsPerSecond);
-    }
-
-    get ballRevolutionsPerSpin(): number { // TODO: read from ball motion model
-        return this.totalSpinSeconds * (1 / this.ballSecondsPerRevolution);
+        // return 1 * Math.log(this.ballDistanceGainedPerSpin) / (this.totalSpinSeconds * this.momentsPerSecond);
+        // return Math.exp(this.ballDistanceGainedPerSpin) / (this.totalSpinSeconds * this.momentsPerSecond);
+        return (this.totalSpinSeconds * this.momentsPerSecond) / this.ballDistanceGainedPerSpin;
     }
 
     get ballStopped(): boolean {
@@ -311,6 +318,10 @@ export class RouletteWheel {
 
     get circumference(): number {
         return Math.PI * this.diameter;
+    }
+
+    get lastMomentForCurrentSpin(): number {
+        return this.currentSpinStartMoment + this.momentsPerSpin;
     }
 
     get lastSlotPosition(): PixelPosition {
@@ -339,7 +350,7 @@ export class RouletteWheel {
     }
 
     get nextBallPosition(): PixelPosition {
-        return this.getPositionRelativeToCenter(this.nextBallCoordinatesRelativeToCenter, this.nextBallPositionDegreesTraversed);
+        return RouletteWheel.GetPositionRelativeToCenter(this.centerPosition, this.nextBallCoordinatesRelativeToCenter, this.nextBallPositionDegreesTraversed);
     }
 
     get nextBallCoordinatesRelativeToCenter(): PixelCoordinates {
@@ -347,11 +358,12 @@ export class RouletteWheel {
     }
 
     get nextBallPositionDegreesTraversed(): number { // TODO: read from ball motion model
-        return (this.moment * this.ballDegreesTraversedPerMomentAverage) % 360;
+        // return (this.moment * this.ballDegreesTraversedLastMoment) % 360;
+        return this.getBallDegreesTraversedAtTime(this.moment) % 360;
     }
 
-    get nextBallPositionDistanceFromCenter(): number { // TODO: read from ball motion model
-        const d = this.ballDistanceFromCenter - this.ballDistanceTraversedPerMomentAverage;
+    get nextBallPositionDistanceFromCenter(): number {
+        const d = this.ballDistanceFromCenter - this.ballDistanceGainedLastMoment;
         return Math.max(d, this.ballDistanceFromCenterFinal);
     }
 
@@ -419,8 +431,33 @@ export class RouletteWheel {
         return (360 / this.wheelSecondsPerRevolution) * (this.timerPeriod / 1000);
     }
 
-    getBallDistanceGainedAtTime(t: number): number {
-        return this.ballMotionConstant * Math.log(t);
+    getBallDegreesTraversedAtTime(moment: number): number {
+        return this.getProportionOfTotalDistanceCoveredAtTime(moment) * this.ballDegreesTraversedPerSpin;
+    }
+
+    getBallDistanceGainedAtTime(moment: number): number {
+        const t = this.getMomentsPassedInSpin(moment);
+        const k = this.ballMotionConstant;
+        // return Math.pow(Math.E, 1 * t * k);
+        // return Math.log(k * t);
+        return (1 / k) * t;
+    }
+
+    getBallMotionIntegralAtTime(moment: number) {
+        const t = this.getMomentsPassedInSpin(moment);
+        const k = this.ballMotionConstant;
+        // return (-1 / k) * Math.pow(Math.E, 1 * t * k);
+        // return ((k * t) / k) * Math.log(k * t) - t;
+        // return t * Math.log(k * t) - t;
+        return (1 / 2 * k) * t ^ 2;
+    }
+
+    getMomentsPassedInSpin(t: number): number {
+        return t - this.currentSpinStartMoment + 1;
+    }
+
+    getProportionOfTotalDistanceCoveredAtTime(moment: number) {
+        return this.getBallMotionIntegralAtTime(moment) / this.ballDistanceCoveredTotal;
     }
 
     getWheelDegreesTraversedAtPosition(pos: PixelPosition): number { // WHEEL IS MOVING COUNTER-CLOCKWISE!
@@ -446,10 +483,6 @@ export class RouletteWheel {
 
     getDistanceFromCenter(pos: PixelPosition): number {
         return Math.sqrt(Math.pow(this.centerPosition.top - pos.top, 2) + Math.pow(this.centerPosition.left - pos.left, 2));
-    }
-
-    getPositionRelativeToCenter(coordinates: PixelCoordinates, degreesTraversedClockwise: number): PixelPosition {
-        return RouletteWheel.GetPositionRelativeToCenter(this.centerPosition, coordinates, degreesTraversedClockwise);
     }
 
     getSlotPosition(slotNumber: string): PixelPosition {
@@ -484,6 +517,7 @@ export class RouletteWheel {
         if (this.started) {
             this.stoppedMoment = 0;
             this.stoppedDegreesCounterClockwise = 0;
+            this.currentSpinStartMoment = this.moment;
             this.status = 'SPINNING';
             this.playSound();
         }
@@ -496,7 +530,7 @@ export class RouletteWheel {
             position,
         });
         this.emitLastSpin(spin);
-        this.stoppedDegreesCounterClockwise = RouletteWheel.GetDegreesCounterClockwiseFromPosition(this.centerPosition, position);
+        this.stoppedDegreesCounterClockwise = RouletteWheel.GetDegreesCounterClockwiseFromPosition(this.centerPosition, position) + (3 * this.slotCentralAngle / 4);
         this.stoppedMoment = moment;
         this.startTransition();
     }
@@ -512,11 +546,6 @@ export class RouletteWheel {
         this.status = 'STOPPED';
         this.emitDefaultBall();
         this.moment = 0;
-    }
-
-    stopTransition() {
-        this.status = 'STARTED';
-        this.emitDefaultBall();
     }
 
     reload() {
@@ -546,7 +575,6 @@ export class RouletteWheel {
     }
 
     private getNextMoment() {
-        // this.log(this.status, 1000);
         switch (this.status) {
             case 'STARTED':
                 break;
@@ -555,7 +583,7 @@ export class RouletteWheel {
                 break;
             case 'SPINNING':
                 if (this.ballStopped) {
-                    this.endSpin(this.moment, this.ball.position); // TODO: check this logic
+                    this.endSpin(this.moment - 1, this.ball.position); // TODO: check this logic
                 } else {
                     const pos = this.nextBallPosition;
                     const b = build(RouletteBall, { position: pos });
@@ -707,9 +735,9 @@ export class RouletteWheelSlot {
 
     get ballDegrees(): number { // TODO: find correct ball degrees
         // return RouletteWheel.GetMiddleDegrees(this.startDegrees, this.endDegrees);
-        return RouletteWheel.GetQuartileDegrees(this.startDegrees, this.endDegrees);
+        // return RouletteWheel.GetQuartileDegrees(this.startDegrees, this.endDegrees);
         // return this.startDegrees;
-        // return this.endDegrees;
+        return this.startDegrees;
     }
 
     getBallPosition(center: PixelPosition, radius: number): PixelPosition {
