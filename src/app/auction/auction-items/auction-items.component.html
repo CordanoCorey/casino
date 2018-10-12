@@ -18,9 +18,14 @@
 
 
 <div class="auction-items scrollable">
+  <button mat-raised-button (click)="createNew()">
+    <mat-icon>add</mat-icon>
+    New Auction Item
+  </button>
   <casino-auction-item-preview *ngFor="let item of auctionItems$ | async; let i = index;" [item]="item" [order]="i"
     (click)="edit(item)"></casino-auction-item-preview>
-  <button mat-fab color="primary" (click)="createNew()">
+  <button mat-raised-button (click)="createNew()">
     <mat-icon>add</mat-icon>
+    New Auction Item
   </button>
 </div>

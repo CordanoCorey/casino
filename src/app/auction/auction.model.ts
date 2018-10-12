@@ -2,7 +2,7 @@ import { Collection, build, Metadata } from '@caiu/library';
 
 export class AuctionItem {
     id = 0;
-    endTime: Date = new Date();
+    endTime: Date = new Date('October 13, 2018  21:00:00');
     name = '';
     round = 0;
     salePriceCash = 0;

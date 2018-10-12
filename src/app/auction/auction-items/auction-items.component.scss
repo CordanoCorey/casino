@@ -53,9 +53,11 @@
     height: 120px;
   }
 
-  .mat-fab {
-    mat-icon {
-      color: #fff;
-    }
+  .mat-raised-button {
+    background-color: $baby-blue;
+    background-color: green;
+    margin: 10px 0;
+    padding: 10px 20px;
+    color: #fff;
   }
 }
