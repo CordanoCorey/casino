@@ -31,7 +31,7 @@ export class CashierComponent extends SmartComponent implements OnInit {
   }
 
   onSaveTotals(e: Totals) {
-    this.updateTotals(e.bankTotal, e.chipTotal);
+    this.updateTotals(e.cashTotal, e.chipTotal);
   }
 
   onTimesUp() {
@@ -43,8 +43,8 @@ export class CashierComponent extends SmartComponent implements OnInit {
     this.dispatch(CashierActions.update(data));
   }
 
-  updateTotals(bankTotal: number, chipTotal: number) {
-    this.dispatch(CashierActions.updateTotals(bankTotal, chipTotal));
+  updateTotals(cashTotal: number, chipTotal: number) {
+    this.dispatch(CashierActions.updateTotals(cashTotal, chipTotal));
   }
 
 }

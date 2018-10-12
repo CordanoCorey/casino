@@ -21,6 +21,6 @@
     <div *ngIf="item.chips && item.ended" class="price">{{ item.salePrice }} chips</div>
     <div *ngIf="!item.ended" class="price">N/A</div>
   </div>
-  <img class="bg" [src]="backgroundImage">
+  <img class="bg" [class.ended]="item.ended" [src]="backgroundImage">
   <img class="item-image" [src]="item.imageSrc">
 </div>

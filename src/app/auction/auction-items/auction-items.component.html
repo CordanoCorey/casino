@@ -18,5 +18,6 @@
 
 
 <div class="auction-items scrollable">
-  <casino-auction-item-preview *ngFor="let item of auctionItems$ | async; let i = index;" [item]="item" [order]="i"></casino-auction-item-preview>
+  <casino-auction-item-preview *ngFor="let item of auctionItems$ | async; let i = index;" [item]="item" [order]="i"
+    (click)="edit(item)"></casino-auction-item-preview>
 </div>

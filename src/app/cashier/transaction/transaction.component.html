@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <input matInput placeholder="Total Cash Added To Bank" type="number" formControlName="cashTotal">
+    <span matPrefix>$&nbsp;</span>
+    <!-- <span matSuffix>.00</span> -->
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Total Chips in Play Added" type="number" formControlName="chipTotal">
+    <span matSuffix>chips</span>
+  </mat-form-field>
+  <button class="btn-save" (click)="save()">SAVE</button>
+</form>

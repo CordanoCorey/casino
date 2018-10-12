@@ -1,4 +1,4 @@
-import { Action } from '@caiu/library';
+import { Action, compareDates } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,7 +13,7 @@ export class AuctionActions {
         ];
     }
 
-    static save(payload: Auction): Action {
+    static save(payload: AuctionItem): Action {
         return {
             type: AuctionActions.SAVE,
             payload
@@ -38,6 +38,6 @@ export function auctionSelector(store: Store<any>): Observable<Auction> {
 
 export function auctionItemsSelector(store: Store<any>): Observable<AuctionItem[]> {
     return auctionSelector(store).pipe(
-        map(x => x.asArray)
+        map(x => x.asArray.sort((a, b) => compareDates(a.endTime, b.endTime)).reverse())
     );
 }

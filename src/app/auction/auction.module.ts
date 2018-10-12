@@ -18,6 +18,9 @@ import { AuctionItemPreviewComponent } from './auction-item-preview/auction-item
   ],
   exports: [
     AuctionItemsComponent,
+  ],
+  entryComponents: [
+    AuctionItemFormComponent,
   ]
 })
 export class AuctionModule { }

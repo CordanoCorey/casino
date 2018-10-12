@@ -1,8 +1,13 @@
 <casino-container [hasWallpaper]="true" backgroundImage="assets/bg-home.jpg">
   <!-- <div id="inner-content" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px"> -->
   <div id="inner-content">
-    <casino-auction-items [style.height.px]="858"></casino-auction-items>
+    <casino-auction-items [style.height.px]="sidebarHeight"></casino-auction-items>
     <casino-round-live></casino-round-live>
-    <casino-rounds [style.height.px]="858"></casino-rounds>
+    <casino-rounds [style.height.px]="sidebarHeight"></casino-rounds>
   </div>
 </casino-container>
+
+<button class="btn-transaction" mat-raised-button (click)="doTransaction()" fxLayout fxLayoutAlign="center center">
+  <!-- <mat-icon>attach_money</mat-icon> -->
+  <span class="dollar-sign font-effect-outline">$</span>
+</button>

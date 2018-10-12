@@ -17,6 +17,8 @@ export class AuctionItem {
                 'cash',
                 'chips',
                 'ended',
+                'paid',
+                'round',
                 'salePrice',
                 'startPrice',
             ]
@@ -29,6 +31,10 @@ export class AuctionItem {
 
     get chips(): boolean {
         return this.startPriceChips > 0;
+    }
+
+    get paid(): boolean {
+        return this.ended && (this.salePriceCash > 0 || this.salePriceChips > 0);
     }
 
     get ended(): boolean {
@@ -91,7 +97,7 @@ export class Auction extends Collection<AuctionItem> {
     }
 
     update(data: AuctionItem | AuctionItem[]): Auction {
-        return build(Auction, data);
+        return build(Auction, this.update(data));
     }
 
 }

@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 
 import { Auction } from './auction/auction.model';
 import { AuctionActions } from './auction/auction.reducer';
+import { Cashier } from './cashier/cashier.model';
+import { CashierActions } from './cashier/cashier.reducer';
 import { Roulette } from './roulette/roulette.model';
 import { RouletteActions } from './roulette/roulette.reducer';
 import { Rounds } from './rounds/rounds.model';
@@ -27,6 +29,7 @@ export class AppComponent extends SmartComponent implements OnInit {
   get localStorageActions(): string[] {
     return [
       ...AuctionActions.ALL,
+      ...CashierActions.ALL,
       ...RouletteActions.ALL,
       ...RoundsActions.ALL,
     ];
@@ -35,9 +38,10 @@ export class AppComponent extends SmartComponent implements OnInit {
   get localStorageMapper(): (s: any) => any {
     return (state) => {
       const auction = build(Auction, state['auction']);
+      const cashier = build(Cashier, state['cashier']);
       const roulette = build(Roulette, state['roulette']);
       const rounds = build(Rounds, state['rounds']);
-      return { auction, roulette, rounds };
+      return { auction, cashier, roulette, rounds };
     };
   }
 

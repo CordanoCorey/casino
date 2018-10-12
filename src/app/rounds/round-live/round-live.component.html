@@ -8,17 +8,17 @@
   <div class="totals" fxLayout fxLayoutAlign="space-around center" fxLayoutGap="20px">
     <!-- <casino-totals [totals]="totals$ | async" (save)="onSaveTotals($event)"></casino-totals> -->
     <!-- <casino-exchange-rate [chipValue]="chipValue$ | async"></casino-exchange-rate> -->
-    <div class="total font-effect-outline">
+    <div class="total font-effect-emboss">
       <h3>Total Chips in Circulation</h3>
-      <h2>{{ totals.chipTotal }} Chips</h2>
+      <h2>{{ totals.chipTotal }} chips</h2>
     </div>
     <div class="total font-effect-emboss">
       <h3>Exchange Rate</h3>
       <h2>{{ exchangeRate | currency:undefined:'symbol':'1.3-5' }}</h2>
     </div>
-    <div class="total font-effect-outline">
+    <div class="total font-effect-emboss">
       <h3>Total Cash in Bank</h3>
-      <h2>{{ totals.bankTotal | currency }}</h2>
+      <h2>{{ totals.cashTotal | currency }}</h2>
     </div>
   </div>
 </div>

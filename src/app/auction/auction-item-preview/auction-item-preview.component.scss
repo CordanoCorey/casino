@@ -1,80 +1,70 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
-
 .item-preview {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  display: block;
-  padding: 0;
-  background: transparent;
-
-  .bg {
-    @include mat-elevation(16);
-    width: 120px;
-    height: 168px;
-    position: absolute;
-    top: -25px;
-    left: 25px;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-    z-index: 8;
-    opacity: 0.9;
-    cursor: pointer;
-  }
-
-  .item-image {
-    @include mat-elevation(2);
-    height: 50px;
-    z-index: 10;
-    // position: absolute;
-    // top: 40px;
-    // left: 55px;
-    border-radius: 5px;
-  }
-
-  .end-time {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    font-size: 16px;
-    color: $baby-pink;
-    z-index: 9;
-    font-weight: bold;
-  }
-
-  .item-name {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    font-size: 16px;
-    color: $baby-blue;
-    z-index: 9;
-  }
-
-  .price,
-  .label {
-    font-size: 10px;
-  }
-
-  .label {
-    text-decoration: underline;
-  }
-
-  .start-price {
-    position: absolute;
-    top: 35px;
-    left: 10px;
-    z-index: 9;
-  }
-
-  .end-price {
-    position: absolute;
-    top: 35px;
-    right: 10px;
-    z-index: 9;
-  }
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 0;
+    background: transparent;
+    .bg {
+        @include mat-elevation(16);
+        width: 120px;
+        height: 168px;
+        position: absolute;
+        top: -25px;
+        left: 25px;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+        z-index: 8;
+        cursor: pointer;
+    }
+    .bg.ended {
+        opacity: 0.7;
+    }
+    .item-image {
+        @include mat-elevation(2);
+        height: 50px;
+        z-index: 10;
+        border-radius: 5px;
+    }
+    .end-time {
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+        font-size: 16px;
+        color: $baby-pink;
+        z-index: 9;
+        font-weight: bold;
+    }
+    .item-name {
+        position: absolute;
+        top: 5px;
+        left: 10px;
+        font-size: 16px;
+        color: $baby-blue;
+        z-index: 9;
+    }
+    .price,
+    .label {
+        font-size: 10px;
+    }
+    .label {
+        text-decoration: underline;
+    }
+    .start-price {
+        position: absolute;
+        top: 35px;
+        left: 10px;
+        z-index: 9;
+    }
+    .end-price {
+        position: absolute;
+        top: 35px;
+        right: 10px;
+        z-index: 9;
+    }
 }

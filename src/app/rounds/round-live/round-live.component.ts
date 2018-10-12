@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { RoundsActions, currentRoundSelector } from '../rounds.reducer';
 import { Totals } from '../../shared/models';
 import { Round } from '../rounds.model';
+import { totalsSelector } from '../../cashier/cashier.reducer';
 
 @Component({
   selector: 'casino-round-live',
@@ -17,15 +18,18 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
 
   @ViewChild(TimerComponent) timer: TimerComponent;
   countdownFrom = build(Time, {
-    minutes: 1,
+    minutes: 6,
   });
   currentRound: Round = new Round();
   currentRound$: Observable<Round>;
+  totals: Totals = new Totals();
+  totals$: Observable<Totals>;
   roundNumber = 1;
 
   constructor(public store: Store<any>) {
     super(store);
     this.currentRound$ = currentRoundSelector(store);
+    this.totals$ = totalsSelector(store);
   }
 
   get currentRoundChanges(): Subscription {
@@ -38,13 +42,16 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
     return this.totals.chipValue / 100;
   }
 
-  get totals(): Totals {
-    return this.currentRound.totals;
+  get totalsChanges(): Subscription {
+    return this.totals$.subscribe(x => {
+      this.totals = x;
+    });
   }
 
   ngOnInit() {
     this.subscribe([
       this.currentRoundChanges,
+      this.totalsChanges,
     ]);
   }
 
@@ -56,6 +63,10 @@ export class RoundLiveComponent extends SmartComponent implements OnInit {
   }
 
   onTimesUp() {
+    this.saveRound(build(Round, {
+      id: this.roundNumber,
+      totals: this.totals,
+    }));
     this.timer.startAt(this.countdownFrom);
     this.roundNumber += 1;
   }
