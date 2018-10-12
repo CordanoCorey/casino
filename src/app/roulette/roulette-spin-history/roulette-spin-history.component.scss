@@ -1,13 +1,43 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
+
 #spin-history {
+  @include mat-elevation(16);
+  background: rgba(0, 0, 0, 0.9);
+  height: 720px;
+  width: 300px;
+  overflow-y: auto;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+
+  h2 {
+    color: #fff;
+    text-align: center;
+  }
+
+  .inline-spin {
     @include mat-elevation(16);
-    background: rgba(0, 0, 0, 0.9);
-    height: 600px;
-    width: 200px;
-    .inline-spin {
-        color: #fff;
-        height: 50px;
-        width: 30%;
+    color: #fff;
+    height: 50px;
+    width: 50px;
+
+    h4 {
+      font-size: 24px;
     }
+  }
+
+  .inline-spin.green {
+    @include green-gradient();
+    margin-left: 125px;
+  }
+
+  .inline-spin.black {
+    @include black-gradient();
+    margin-left: 225px;
+  }
+
+  .inline-spin.red {
+    @include red-gradient();
+    margin-left: 25px;
+  }
 }

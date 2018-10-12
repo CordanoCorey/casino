@@ -1,3 +1,7 @@
 <div id="spin-history" class="scrollable">
-  <div *ngFor="let spin of spins" class="inline-spin">{{ spin.slotNumber }}</div>
+  <h2 class="font-effect-emboss">Spin History</h2>
+  <div *ngFor="let spin of spins" class="inline-spin" [class.red]="isRed(spin)" [class.green]="isGreen(spin)"
+    [class.black]="isBlack(spin)" fxLayout fxLayoutAlign="center center">
+    <h4 class="font-effect-emboss">{{ spin.slotNumber }}</h4>
+  </div>
 </div>

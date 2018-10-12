@@ -53,7 +53,6 @@ export class RoundsComponent extends SmartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds$.subscribe(x => { console.dir(x); });
   }
 
 }

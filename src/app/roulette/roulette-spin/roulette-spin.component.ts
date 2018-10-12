@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { truthy } from '@caiu/library';
 
 import { RouletteWheelSpin } from '../roulette.model';
 
@@ -9,11 +10,26 @@ import { RouletteWheelSpin } from '../roulette.model';
 })
 export class RouletteSpinComponent implements OnInit {
 
-  @Input() spin: RouletteWheelSpin;
+  @Input() spin: RouletteWheelSpin = new RouletteWheelSpin();
 
   constructor() { }
 
+  get black(): boolean {
+    return truthy(this.spin) && this.spin.slotColor === 'Black';
+  }
+
+  get green(): boolean {
+    return truthy(this.spin) && this.spin.slotColor === 'Green';
+  }
+
+  get red(): boolean {
+    return truthy(this.spin) && this.spin.slotColor === 'Red';
+  }
+
   ngOnInit() {
+  }
+
+  ngOnChanges() {
   }
 
 }

@@ -26,13 +26,10 @@ export class Cashier {
     }
 
     saveAuctionItem(data: AuctionItem): Cashier {
-        console.log(data.cash ? this.cashTotal + data.salePriceCash : this.cashTotal, data.chips ? this.chipTotal - data.salePriceChips : this.chipTotal);
-        const s = data.paid ? build(Cashier, this, {
+        return data.paid ? build(Cashier, this, {
             cashTotal: data.cash ? this.cashTotal + data.salePriceCash : this.cashTotal,
             chipTotal: data.chips ? this.chipTotal - data.salePriceChips : this.chipTotal,
         }) : this;
-        console.dir(s);
-        return s;
     }
 
     update(data: any): Cashier {

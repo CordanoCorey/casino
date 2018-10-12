@@ -3,8 +3,9 @@
   <button id="btn-stop" mat-button (click)="wheel.stop()" *ngIf="showStopButton">STOP</button> -->
   <casino-roulette-wheel [diameter]="wheel.diameter" [offsetLeft]="wheel.offsetLeft" [offsetTop]="wheel.offsetTop"
     [started]="wheel.started" [centerPositionTop]="wheel.centerPosition.top" [centerPositionLeft]="wheel.centerPosition.left"
-    [ballPositionTop]="ball.positionTop" [ballPositionLeft]="ball.positionLeft" (startSpin)="wheel.startSpin()"></casino-roulette-wheel>
-  <casino-roulette-spin [spin]="lastSpin" *ngIf="!testing"></casino-roulette-spin>
+    [ballPositionTop]="ball.positionTop" [ballPositionLeft]="ball.positionLeft" (startSpin)="startSpin()"></casino-roulette-wheel>
+  <casino-roulette-spin [spin]="lastSpin" *ngIf="!testing && hasLastSpin" [style.top.px]="lastSpinPositionTop"
+    [style.left.px]="lastSpinPositionLeft"></casino-roulette-spin>
   <casino-roulette-spin-history [spins]="spinHistory$ | async" *ngIf="!testing"></casino-roulette-spin-history>
   <casino-roulette-spin-distribution [spins]="spinDistribution$ | async" *ngIf="testing"></casino-roulette-spin-distribution>
 </casino-container>

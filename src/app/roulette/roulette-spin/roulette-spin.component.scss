@@ -1,8 +1,25 @@
 @import '~@angular/material/_theming';
 @import '../../../common';
+
 .roulette-spin {
-    @include mat-elevation(16);
-    @include silver-gradient();
-    height: 400px;
-    width: 400px;
+  @include mat-elevation(16);
+  height: 100%;
+  width: 100%;
+
+  h1 {
+    color: #fff;
+    font-size: 128px;
+  }
+}
+
+.roulette-spin.green {
+  @include green-gradient();
+}
+
+.roulette-spin.black {
+  @include black-gradient();
+}
+
+.roulette-spin.red {
+  @include red-gradient();
 }

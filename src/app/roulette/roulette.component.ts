@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SmartComponent } from '@caiu/library';
+import { SmartComponent, truthy } from '@caiu/library';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -35,6 +35,18 @@ export class RouletteComponent extends SmartComponent implements OnInit {
     });
   }
 
+  get hasLastSpin(): boolean {
+    return truthy(this.lastSpin) && this.wheelStatus !== 'SPINNING';
+  }
+
+  get lastSpinPositionLeft(): number {
+    return this.wheel.centerPosition.left - 150;
+  }
+
+  get lastSpinPositionTop(): number {
+    return this.wheel.centerPosition.top - 150;
+  }
+
   get lastSpinChanges(): Subscription {
     return this.lastSpin$.subscribe(x => {
       this.lastSpin = x;
@@ -56,6 +68,10 @@ export class RouletteComponent extends SmartComponent implements OnInit {
     return this.wheel.started && !this.wheel.spinning;
   }
 
+  get wheelStatus(): 'STOPPED' | 'STARTED' | 'SPINNING' | 'TRANSITIONING' | 'RELOADING' {
+    return this.wheel.status;
+  }
+
   ngOnInit() {
     this.wheel = new RouletteWheel(720, 100, 100);
     this.ball$ = this.wheel.ball$;
@@ -65,7 +81,13 @@ export class RouletteComponent extends SmartComponent implements OnInit {
       this.lastSpinChanges,
     ]);
     this.wheel.start();
-    this.test(1000);
+    //this.test(1000);
+  }
+
+  startSpin() {
+    if (this.wheelStatus === 'STARTED' || this.wheelStatus === 'RELOADING') {
+      this.wheel.startSpin();
+    }
   }
 
   test(sampleSize = 100) {

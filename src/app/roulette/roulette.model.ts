@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class RouletteWheelSpin {
     moment = 0;
     position: PixelPosition = new PixelPosition();
+    realTime: Date;
     slot: RouletteWheelSlot = new RouletteWheelSlot();
 
     static Build(data: RouletteWheelSpin): RouletteWheelSpin {
@@ -42,7 +43,8 @@ export class Roulette extends Collection<RouletteWheelSpin> {
 
     addSpin(data: RouletteWheelSpin): Roulette {
         const spin = build(RouletteWheelSpin, data, {
-            slotNumber: data.slotNumber === '35' && data.slotColor === 'red' ? '25' : data.slotNumber,
+            // slotNumber: data.slotNumber === '35' && data.slotColor === 'red' ? '25' : data.slotNumber,
+            realTime: new Date(),
         });
         return build(Roulette, this.update(spin));
     }
@@ -68,7 +70,7 @@ export class RouletteWheel {
     stoppedDegreesCounterClockwise = 0;
     stoppedMoment = 0;
     timeInterval;
-    timerPeriod = 5;
+    timerPeriod = 10;
     totalSpinSeconds = 12;
     _ball: RouletteBall;
     _moment = 0;
@@ -288,6 +290,10 @@ export class RouletteWheel {
         return this.radius - this.ballDistanceFromCenterStoppedOffset;
     }
 
+    get ballMotionConstant(): number {
+        return this.ballDistanceTraversedPerSpin / Math.log(this.totalSpinSeconds * this.momentsPerSecond);
+    }
+
     get ballRevolutionsPerSpin(): number { // TODO: read from ball motion model
         return this.totalSpinSeconds * (1 / this.ballSecondsPerRevolution);
     }
@@ -413,6 +419,10 @@ export class RouletteWheel {
         return (360 / this.wheelSecondsPerRevolution) * (this.timerPeriod / 1000);
     }
 
+    getBallDistanceGainedAtTime(t: number): number {
+        return this.ballMotionConstant * Math.log(t);
+    }
+
     getWheelDegreesTraversedAtPosition(pos: PixelPosition): number { // WHEEL IS MOVING COUNTER-CLOCKWISE!
         const centerLeft = this.centerPosition.left;
         const centerTop = this.centerPosition.top;
@@ -495,7 +505,7 @@ export class RouletteWheel {
         this.status = 'TRANSITIONING';
         setTimeout(() => {
             this.reload();
-        }, 2000);
+        }, 20000);
     }
 
     stop() {

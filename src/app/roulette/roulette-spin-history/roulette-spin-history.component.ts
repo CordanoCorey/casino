@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { truthy } from '@caiu/library';
 
 import { RouletteWheelSpin } from '../roulette.model';
 
@@ -13,7 +14,39 @@ export class RouletteSpinHistoryComponent implements OnInit {
 
   constructor() { }
 
+  get lastSpin(): RouletteWheelSpin {
+    return this.spins.length > 0 ? this.spins[0] : null;
+  }
+
+  get black(): boolean {
+    return truthy(this.lastSpin) && this.lastSpin.slotColor === 'Black';
+  }
+
+  get green(): boolean {
+    return truthy(this.lastSpin) && this.lastSpin.slotColor === 'Green';
+  }
+
+  get red(): boolean {
+    return truthy(this.lastSpin) && this.lastSpin.slotColor === 'Red';
+  }
+
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    console.dir(this.spins);
+  }
+
+  isBlack(spin: RouletteWheelSpin): boolean {
+    return spin.slotColor === 'Black';
+  }
+
+  isGreen(spin: RouletteWheelSpin): boolean {
+    return spin.slotColor === 'Green';
+  }
+
+  isRed(spin: RouletteWheelSpin): boolean {
+    return spin.slotColor === 'Red';
   }
 
 }
